@@ -15,8 +15,7 @@ import type { CanonicalFields } from '../../src/types/index.js';
 // Known fixture from Section 2 / Section 9 of Sigil_Instruction.md
 // This is the Veyctum positive fixture — our canonical output must
 // follow the same format.
-const VEYCTUM_FIXTURE_HASH =
-  '0x373982c25ba2c56c52c30a6db4ea14f9af267d6152f09f14f0b9b43e842e16a7';
+const VEYCTUM_FIXTURE_HASH = '0x373982c25ba2c56c52c30a6db4ea14f9af267d6152f09f14f0b9b43e842e16a7';
 
 describe('canonical compatibility — Verity / Veyctum format', () => {
   it('produces exactly 7 pipe-delimited fields', () => {

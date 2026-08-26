@@ -16,21 +16,22 @@ const registry = buildChainRegistry(process.env);
 const BASE_TX = '0x373982c25ba2c56c52c30a6db4ea14f9af267d6152f09f14f0b9b43e842e16a7';
 
 // We'll just do a block number ping on each chain (no specific tx needed)
+const out = (msg: string): void => process.stdout.write(msg + '\n');
+
 async function pingChain(name: string, url: string): Promise<void> {
   const start = Date.now();
   try {
     const result = await queryTransaction(url, BASE_TX, 10_000);
     const ms = Date.now() - start;
-    // Even not_found is fine — it means the RPC is live
-    console.log(`✅ ${name.padEnd(10)} chain_id=${String(result.chainId).padStart(6)}  status=${result.status}  block=${String(result.currentBlockNumber)}  (${ms}ms)`);
+    out(`✅ ${name.padEnd(10)} chain_id=${String(result.chainId).padStart(6)}  status=${result.status}  block=${String(result.currentBlockNumber)}  (${ms}ms)`);
   } catch (err) {
     const ms = Date.now() - start;
-    console.log(`❌ ${name.padEnd(10)} ERROR: ${err instanceof Error ? err.message : String(err)}  (${ms}ms)`);
+    out(`❌ ${name.padEnd(10)} ERROR: ${err instanceof Error ? err.message : String(err)}  (${ms}ms)`);
   }
 }
 
-console.log('\nSIGIL — Live RPC Smoke Test\n' + '='.repeat(60));
-console.log('Provider A (Alchemy mainnet):');
+out('\nSIGIL — Live RPC Smoke Test\n' + '='.repeat(60));
+out('Provider A (Alchemy mainnet):');
 
 await Promise.all([
   pingChain('ethereum', registry.ethereum.providerAUrl),
@@ -40,7 +41,7 @@ await Promise.all([
   pingChain('polygon',  registry.polygon.providerAUrl),
 ]);
 
-console.log('\nProvider B (public RPCs):');
+out('\nProvider B (public RPCs):');
 await Promise.all([
   pingChain('ethereum', registry.ethereum.providerBUrl),
   pingChain('base',     registry.base.providerBUrl),
@@ -49,5 +50,5 @@ await Promise.all([
   pingChain('polygon',  registry.polygon.providerBUrl),
 ]);
 
-console.log('\n' + '='.repeat(60));
-console.log('If all rows show ✅, your keys are working and you are ready to deploy.\n');
+out('\n' + '='.repeat(60));
+out('If all rows show ✅, your keys are working and you are ready to deploy.\n');

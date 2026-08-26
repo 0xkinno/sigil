@@ -5,7 +5,7 @@ services:
     plan: free
     region: oregon
     buildCommand: npm ci && npm run build
-    startCommand: npm start
+    startCommand: node dist/index.js
     healthCheckPath: /health
     autoDeploy: true
     envVars:
@@ -28,7 +28,7 @@ services:
       - key: ALCHEMY_POLY_URL
         sync: false
       - key: BACKUP_ETH_URL
-        value: https://eth.llamarpc.com
+        value: https://ethereum-rpc.publicnode.com
       - key: BACKUP_BASE_URL
         value: https://mainnet.base.org
       - key: BACKUP_ARB_URL
@@ -36,7 +36,7 @@ services:
       - key: BACKUP_OPT_URL
         value: https://mainnet.optimism.io
       - key: BACKUP_POLY_URL
-        value: https://polygon-rpc.com
+        value: https://polygon-bor-rpc.publicnode.com
       - key: MINER_PRIVATE_KEY
         sync: false
       - key: BASE_SEPOLIA_RPC

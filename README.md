@@ -223,24 +223,6 @@ Every non-success state returns `confidence: 0` and an appropriate `error_code` 
 
 ---
 
-## Competitive Advantage
-
-No other miner in `ONCHAIN_TX_LOOKUP` combines **all seven** of these properties:
-
-| Feature | **Sigil** | Verity | Veyctum | TxLens |
-|---------|-----------|--------|---------|--------|
-| 5-chain coverage | ✅ | ✅ | ❌ (Base only) | ✅ |
-| Dual-RPC consensus (fail-closed) | ✅ | ❌ | ✅ | ❌ |
-| ERC-20 Transfer log decoding | ✅ | ❌ | ✅ | ❌ |
-| Confirmation depth scoring | ✅ | ❌ | ❌ | ✅ |
-| 12-state error taxonomy | ✅ | ❌ | ❌ | ❌ |
-| Sub-second parallel RPC queries | ✅ | ❌ | ✅ | ❌ |
-| All of the above combined | ✅ | ❌ | ❌ | ❌ |
-
-**Sigil's moat:** Each competitor has 2–3 of these. Sigil has all seven.
-
----
-
 ## Telegraph Integration
 
 Sigil is a first-class Telegraph miner. Without Telegraph, Sigil has no routing, no verification, no payment, and no reason to exist. Every component is a Telegraph primitive:
