@@ -1,0 +1,103 @@
+version: "1"
+kind: miner
+id: 9010
+slug: sigil-onchain-lookup
+protocol: generic
+name: Sigil Multi-Chain Transaction Lookup
+description: >-
+  Dual-RPC verified EVM transaction lookup across Ethereum, Base, Arbitrum,
+  Optimism and Polygon. Two independent providers must agree on critical
+  transaction facts before any result is returned. Reports native value,
+  ERC-20 transfer effects, confirmation depth confidence, and a compact
+  canonical payload for deterministic scoring.
+base_url: https://sigil.onrender.com
+
+endpoints:
+  - path: /lookup
+    external_path: /lookup
+    method: GET
+    description: >-
+      Look up a transaction on a supported EVM chain. Returns status,
+      canonical scoring field, transfer effects, and dual-RPC evidence.
+
+semantics:
+  signal_mapping:
+    confidence_field: confidence
+    label_field: canonical
+    reason_field: summary
+  supported_intents:
+    - ONCHAIN_TX_LOOKUP
+
+rate_limit_per_sec: 5
+cache_ttl_sec: 0
+circuit_threshold: 5
+circuit_cooldown_seconds: 30
+
+input_schema:
+  type: object
+  required:
+    - chain
+    - tx_hash
+  properties:
+    chain:
+      type: string
+      enum:
+        - ethereum
+        - base
+        - arbitrum
+        - optimism
+        - polygon
+      description: EVM chain to query.
+    tx_hash:
+      type: string
+      pattern: "^0x[0-9a-fA-F]{64}$"
+      description: Transaction hash to look up.
+
+output_schema:
+  type: object
+  required:
+    - chain
+    - chain_id
+    - tx_hash
+    - status
+    - canonical
+    - confidence
+    - summary
+  properties:
+    chain:
+      type: string
+    chain_id:
+      type: integer
+    tx_hash:
+      type: string
+    status:
+      type: string
+    block_number:
+      type: string
+    from:
+      type: string
+    to:
+      type: string
+    value_wei:
+      type: string
+    canonical:
+      type: string
+    confidence:
+      type: number
+    summary:
+      type: string
+    effects:
+      type: array
+      items:
+        type: object
+    finality:
+      type: object
+    evidence:
+      type: object
+    error_code:
+      type: string
+    error_detail:
+      type: string
+
+docs:
+  repository: https://github.com/0xkinno/sigil

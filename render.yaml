@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: sigil
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 60000
+      - key: RATE_LIMIT_MAX
+        value: 30
+      - key: ALCHEMY_ETH_URL
+        sync: false
+      - key: ALCHEMY_BASE_URL
+        sync: false
+      - key: ALCHEMY_ARB_URL
+        sync: false
+      - key: ALCHEMY_OPT_URL
+        sync: false
+      - key: ALCHEMY_POLY_URL
+        sync: false
+      - key: BACKUP_ETH_URL
+        value: https://eth.llamarpc.com
+      - key: BACKUP_BASE_URL
+        value: https://mainnet.base.org
+      - key: BACKUP_ARB_URL
+        value: https://arb1.arbitrum.io/rpc
+      - key: BACKUP_OPT_URL
+        value: https://mainnet.optimism.io
+      - key: BACKUP_POLY_URL
+        value: https://polygon-rpc.com
+      - key: MINER_PRIVATE_KEY
+        sync: false
+      - key: BASE_SEPOLIA_RPC
+        sync: false
