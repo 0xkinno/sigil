@@ -33,7 +33,7 @@ Registered on-chain. CONFIRMED.
 - [x] Signed `registerMiner` transaction in MetaMask
 - [x] Transaction CONFIRMED on Base Sepolia
 - [x] Registration ID 219 issued
-- [ ] Verify active at https://explorer.telegraphprotocol.com/miners (within 3-5 min)
+- [x] Verified Active at https://explorer.telegraphprotocol.com/miners/sigil-onchain-lookup
 
 ---
 
