@@ -10,7 +10,7 @@ description: >-
   transaction facts before any result is returned. Reports native value,
   ERC-20 transfer effects, confirmation depth confidence, and a compact
   canonical payload for deterministic scoring.
-base_url: https://sigil.onrender.com
+base_url: https://sigil-mssz.onrender.com
 
 endpoints:
   - path: /lookup

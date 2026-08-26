@@ -40,9 +40,9 @@ All code phases (0 through 5) are complete. The miner is fully implemented:
    - `BASE_SEPOLIA_RPC` — your Alchemy Base Sepolia endpoint.
    - The `BACKUP_*` URLs are already pre-filled with public fallback RPCs in `render.yaml`.
 6. Click **Create Web Service**. Render will build and deploy automatically.
-7. Copy the public URL (e.g. `https://sigil-xxxx.onrender.com`) and update `sigil.yaml`:
+7. Copy the public URL (e.g. `https://sigil-mssz.onrender.com`) and update `sigil.yaml`:
    ```yaml
-   base_url: https://sigil-xxxx.onrender.com
+   base_url: https://sigil-mssz.onrender.com
    ```
 8. Push the updated `sigil.yaml`.
 9. Confirm `GET https://<your-render-url>/health` returns `{"status":"ok","uptime_ms":...}`.

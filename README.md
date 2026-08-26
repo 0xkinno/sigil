@@ -7,7 +7,7 @@
 [![Chains](https://img.shields.io/badge/chains-5%20EVM-blue)](#supported-chains)
 [![Intent](https://img.shields.io/badge/intent-ONCHAIN__TX__LOOKUP-teal)](#telegraph-integration)
 
-[Live Miner](https://sigil.onrender.com) · [Telegraph Explorer](https://explorer.telegraphprotocol.com/miners) · [Evidence](./evidence/) · Track 1: Miner
+[Live Miner](https://sigil-mssz.onrender.com) · [Telegraph Explorer](https://explorer.telegraphprotocol.com/miners) · [Evidence](./evidence/) · Track 1: Miner
 
 ---
 
@@ -243,7 +243,7 @@ Sigil is a first-class Telegraph miner. Without Telegraph, Sigil has no routing,
 | Proof | Status |
 |-------|--------|
 | Miner Registration | See [evidence/registration.md](./evidence/registration.md) |
-| Stable Endpoint | https://sigil.onrender.com |
+| Stable Endpoint | https://sigil-mssz.onrender.com |
 | Canonical Compatibility | `npm run test:integration` → all format tests pass |
 | Chains Supported | ethereum · base · arbitrum · optimism · polygon |
 | Test Suite | **91 tests** (60 unit + 31 integration), all passing |
@@ -343,8 +343,8 @@ Render auto-detects the `render.yaml` blueprint at the repo root.
 2. Connect repo to [render.com](https://render.com)
 3. Render auto-reads `render.yaml` (build: `npm ci && npm run build`, start: `npm start`)
 4. Set env vars in Render dashboard (Alchemy keys, `MINER_PRIVATE_KEY`, `BASE_SEPOLIA_RPC`)
-5. Deploy — public URL: `https://sigil.onrender.com`
-6. Verify: `curl https://sigil.onrender.com/health`
+5. Deploy — public URL: `https://sigil-mssz.onrender.com`
+6. Verify: `curl https://sigil-mssz.onrender.com/health`
 
 ---
 
