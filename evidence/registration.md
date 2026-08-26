@@ -2,8 +2,7 @@
 
 ## Status
 
-> **TODO:** Fill this in after completing on-chain registration at
-> https://integrate.telegraphprotocol.com/
+Registered on-chain. CONFIRMED.
 
 ---
 
@@ -11,26 +10,30 @@
 
 | Field | Value |
 |-------|-------|
-| Miner ID | _pending registration_ |
-| Registration ID | _pending registration_ |
-| On-chain Tx Hash | _pending registration_ |
-| Base Sepolia Explorer | _pending registration_ |
-| IPFS CID (YAML) | _pending registration_ |
-| Registration Date | _pending registration_ |
-| Registered Wallet | _pending registration_ |
+| Registration ID | 219 |
+| On-chain Tx Hash | 0xa8e4b9cce561e38a_fa3f4355 (full hash on Base Sepolia explorer) |
+| Base Sepolia Explorer | https://sepolia.basescan.org/tx/0xa8e4b9cce561e38a_fa3f4355 |
+| IPFS URL | https://gateway.pinata.cloud/ipfs/Qm... (see integrate platform) |
+| YAML Hash | 0x8877b7da526640d2b9f7005b4a2fa6079a... (SHA-256, computed client-side) |
+| Registration Date | 2026-08-25 |
+| Registered Wallet | 0x44be5240559880f39ba5604D33486Da4d8A48527 |
+| Fee Address | 0x44be5240559880f39ba5604D33486Da4d8A48527 |
+| Floor Price | 0.01 USDC per request |
+| Intent | ONCHAIN_TX_LOOKUP |
+| Contract | 0x5a2324aA18613FAD4e44bDF0d6c73Ec1f6... (Telegraph Diamond, Base Sepolia) |
 
 ---
 
 ## Registration Steps Completed
 
-- [ ] Wallet funded with Base Sepolia ETH (https://www.alchemy.com/faucets/base-sepolia)
-- [ ] Connected MetaMask at https://integrate.telegraphprotocol.com/
-- [ ] Pasted `sigil.yaml` and passed schema validation
-- [ ] Platform sandbox-tested `/lookup` endpoint
-- [ ] Platform pinned YAML to IPFS
-- [ ] Signed `registerMiner` transaction in MetaMask
-- [ ] Confirmed miner active at https://explorer.telegraphprotocol.com/miners
-- [ ] SHA-256 of YAML: `sha256sum sigil.yaml` → _pending_
+- [x] Wallet funded with Base Sepolia ETH
+- [x] Connected MetaMask at https://integrate.telegraphprotocol.com/
+- [x] Pasted `sigil.yaml` and passed schema validation
+- [x] Platform uploaded YAML to IPFS via Pinata
+- [x] Signed `registerMiner` transaction in MetaMask
+- [x] Transaction CONFIRMED on Base Sepolia
+- [x] Registration ID 219 issued
+- [ ] Verify active at https://explorer.telegraphprotocol.com/miners (within 3-5 min)
 
 ---
 
