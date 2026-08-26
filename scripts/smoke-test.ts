@@ -16,7 +16,9 @@ const registry = buildChainRegistry(process.env);
 const BASE_TX = '0x373982c25ba2c56c52c30a6db4ea14f9af267d6152f09f14f0b9b43e842e16a7';
 
 // We'll just do a block number ping on each chain (no specific tx needed)
-const out = (msg: string): void => process.stdout.write(msg + '\n');
+function out(msg: string): void {
+  process.stdout.write(msg + '\n');
+}
 
 async function pingChain(name: string, url: string): Promise<void> {
   const start = Date.now();

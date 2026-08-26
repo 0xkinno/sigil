@@ -24,8 +24,9 @@ describe('chain registry', () => {
 
   it('falls back to public RPC URLs for provider B when env is unset', () => {
     const registry = buildChainRegistry({});
-    expect(registry.ethereum.providerBUrl).toBe('https://eth.llamarpc.com');
+    expect(registry.ethereum.providerBUrl).toBe('https://ethereum-rpc.publicnode.com');
     expect(registry.base.providerBUrl).toBe('https://mainnet.base.org');
+    expect(registry.polygon.providerBUrl).toBe('https://polygon-bor-rpc.publicnode.com');
   });
 
   it('leaves provider A empty when env is unset (no fabricated keys)', () => {
