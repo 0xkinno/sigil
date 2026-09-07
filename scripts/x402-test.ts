@@ -28,7 +28,9 @@ async function run(): Promise<void> {
     const body = (await res.json()) as Record<string, unknown>;
     process.stdout.write(`✅ Server healthy. Uptime: ${String(body['uptime_ms'])}ms\n\n`);
   } catch (err) {
-    process.stderr.write(`❌ Server unreachable: ${err instanceof Error ? err.message : String(err)}\n`);
+    process.stderr.write(
+      `❌ Server unreachable: ${err instanceof Error ? err.message : String(err)}\n`,
+    );
     process.exit(1);
   }
 
@@ -44,10 +46,14 @@ async function run(): Promise<void> {
       process.stdout.write(`   version field: ${String(hasVersion)}\n`);
       process.stdout.write(`   slug correct: ${String(hasSlug)}\n\n`);
     } else {
-      process.stdout.write(`⚠️  YAML not yet present (${String(res.status)}). Generate sigil.yaml first.\n\n`);
+      process.stdout.write(
+        `⚠️  YAML not yet present (${String(res.status)}). Generate sigil.yaml first.\n\n`,
+      );
     }
   } catch (err) {
-    process.stdout.write(`⚠️  YAML check failed: ${err instanceof Error ? err.message : String(err)}\n\n`);
+    process.stdout.write(
+      `⚠️  YAML check failed: ${err instanceof Error ? err.message : String(err)}\n\n`,
+    );
   }
 
   // Step 3: Ready check
@@ -62,7 +68,9 @@ async function run(): Promise<void> {
     }
     process.stdout.write('\n');
   } catch (err) {
-    process.stdout.write(`⚠️  Ready check failed: ${err instanceof Error ? err.message : String(err)}\n\n`);
+    process.stdout.write(
+      `⚠️  Ready check failed: ${err instanceof Error ? err.message : String(err)}\n\n`,
+    );
   }
 
   // Step 4: Payment flow instructions

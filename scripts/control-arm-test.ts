@@ -34,7 +34,8 @@ const TEST_CORPUS: SimulatedTx[] = [
     actualFinalityTier: 'sequencer_soft',
     experiencedSequencerReorgOrStall: true,
     valueUsd: 25000,
-    description: 'Arbitrum Inscriptions peak load: Sequencer receipt issued, but batch post stalled for 78 min.',
+    description:
+      'Arbitrum Inscriptions peak load: Sequencer receipt issued, but batch post stalled for 78 min.',
   },
   {
     id: 'TX-ARB-02',
@@ -54,7 +55,8 @@ const TEST_CORPUS: SimulatedTx[] = [
     actualFinalityTier: 'sequencer_soft',
     experiencedSequencerReorgOrStall: true,
     valueUsd: 50000,
-    description: 'Base L2 rapid-burst transaction: soft confirmed, displaced prior to L1 batch inclusion.',
+    description:
+      'Base L2 rapid-burst transaction: soft confirmed, displaced prior to L1 batch inclusion.',
   },
   {
     id: 'TX-BASE-02',
@@ -64,7 +66,8 @@ const TEST_CORPUS: SimulatedTx[] = [
     actualFinalityTier: 'l1_posted',
     experiencedSequencerReorgOrStall: false,
     valueUsd: 8500,
-    description: 'Base L2 standard safe block: posted to L1 batcher, pending 2-epoch Casper FFG finality.',
+    description:
+      'Base L2 standard safe block: posted to L1 batcher, pending 2-epoch Casper FFG finality.',
   },
   {
     id: 'TX-BASE-03',
@@ -74,7 +77,8 @@ const TEST_CORPUS: SimulatedTx[] = [
     actualFinalityTier: 'l1_finalized',
     experiencedSequencerReorgOrStall: false,
     valueUsd: 100000,
-    description: 'Base L2 finalized block: surpassed Casper FFG 2-epoch finalization on Ethereum L1.',
+    description:
+      'Base L2 finalized block: surpassed Casper FFG 2-epoch finalization on Ethereum L1.',
   },
   {
     id: 'TX-OP-01',
@@ -111,7 +115,9 @@ const TEST_CORPUS: SimulatedTx[] = [
 const EVIDENCE_FILE = path.join(process.cwd(), 'evidence', 'control-arm.md');
 
 export function runControlArmStudy(): void {
-  console.log('[Control Arm] Running causal comparison between Arm A (Naive) and Arm B (Sigil Finality-Gated)...');
+  console.log(
+    '[Control Arm] Running causal comparison between Arm A (Naive) and Arm B (Sigil Finality-Gated)...',
+  );
 
   let armAPrematureReleases = 0;
   let armACapitalAtRiskUsd = 0;
@@ -131,7 +137,11 @@ export function runControlArmStudy(): void {
     if (armAExposed) {
       armAPrematureReleases++;
       armACapitalAtRiskUsd += tx.valueUsd;
-    } else if (armAPaid && !tx.experiencedSequencerReorgOrStall && (tx.actualFinalityTier === 'l1_finalized' || tx.actualFinalityTier === 'native_finalized')) {
+    } else if (
+      armAPaid &&
+      !tx.experiencedSequencerReorgOrStall &&
+      (tx.actualFinalityTier === 'l1_finalized' || tx.actualFinalityTier === 'native_finalized')
+    ) {
       armACorrectFinalizedReleases++;
     }
 
@@ -150,10 +160,14 @@ export function runControlArmStudy(): void {
 
     rows.push(
       `| \`${tx.id}\` | \`${tx.chain}\` | \`${tx.actualFinalityTier}\` | \$${tx.valueUsd.toLocaleString()} | ${
-        armAPaid ? (armAExposed ? '❌ **Premature Payout (Vulnerable)**' : '⚠️ Released (Soft/Posted)') : '🔒 Held'
+        armAPaid
+          ? armAExposed
+            ? '❌ **Premature Payout (Vulnerable)**'
+            : '⚠️ Released (Soft/Posted)'
+          : '🔒 Held'
       } | ${
         armBPaid ? '✅ **Released (L1 Finalized)**' : '🔒 **Held (Gated until L1 Finalized)**'
-      } | ${tx.description} |`
+      } | ${tx.description} |`,
     );
   }
 

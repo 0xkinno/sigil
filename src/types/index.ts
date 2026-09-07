@@ -125,11 +125,7 @@ export type Effect = Erc20TransferEffect;
 export type DepthCategory = 'shallow' | 'moderate' | 'deep';
 
 export type FinalityTier =
-  | 'sequencer_soft'
-  | 'l1_posted'
-  | 'l1_finalized'
-  | 'native_finalized'
-  | 'unknown';
+  'sequencer_soft' | 'l1_posted' | 'l1_finalized' | 'native_finalized' | 'unknown';
 
 export interface Finality {
   readonly confirmations: number;

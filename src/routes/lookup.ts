@@ -119,8 +119,10 @@ lookupRouter.post('/transaction/lookup', (req: Request, res: Response, next: Nex
 });
 
 async function handleLookup(req: Request, res: Response): Promise<void> {
-  const chainInput = req.query['chain'] ?? req.body?.chain;
-  const txHashInput = req.query['tx_hash'] ?? req.query['txHash'] ?? req.body?.tx_hash ?? req.body?.txHash;
+  const body = req.body as Record<string, unknown> | undefined;
+  const chainInput = req.query['chain'] ?? body?.['chain'];
+  const txHashInput =
+    req.query['tx_hash'] ?? req.query['txHash'] ?? body?.['tx_hash'] ?? body?.['txHash'];
 
   const validation = validateLookupInput(chainInput, txHashInput);
 
@@ -180,7 +182,7 @@ async function handleLookup(req: Request, res: Response): Promise<void> {
     data.blockNumber,
     data.currentBlockNumber,
     chainConfig.providerAUrl,
-    RPC_TIMEOUT_MS
+    RPC_TIMEOUT_MS,
   );
 
   // Cryptographically sign canonical string with Ed25519
@@ -198,7 +200,13 @@ async function handleLookup(req: Request, res: Response): Promise<void> {
     value_wei: valueWeiStr,
     canonical,
     confidence,
-    summary: summarize(chain, data.status, data.blockNumber, effects.length, finalityResult.summaryClause),
+    summary: summarize(
+      chain,
+      data.status,
+      data.blockNumber,
+      effects.length,
+      finalityResult.summaryClause,
+    ),
     effects,
     finality: finalityResult.finality,
     finality_tier: finalityResult.finalityTier,

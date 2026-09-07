@@ -45,7 +45,9 @@ const FIXTURES = {
 // ---------------------------------------------------------------------------
 
 function isSuccess(body: unknown): body is LookupSuccessResponse {
-  return typeof body === 'object' && body !== null && (body as LookupSuccessResponse).error_code === null;
+  return (
+    typeof body === 'object' && body !== null && (body as LookupSuccessResponse).error_code === null
+  );
 }
 
 // ---------------------------------------------------------------------------

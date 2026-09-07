@@ -25,7 +25,7 @@ Sigil covers **Track 1 (Miner)**, **Track 2 (Scorer)**, and **Track 3 (App & Esc
 | **Track 1: Miner** | **Telegraph Explorer** | [Miner #9010 (`sigil-onchain-lookup`)](https://explorer.telegraphprotocol.com/miners/sigil-onchain-lookup) | Official Telegraph Protocol registry for `ONCHAIN_TX_LOOKUP` |
 | **Track 1: Miner** | **Attestation Key** | [`/.well-known/sigil.json`](https://sigil-mssz.onrender.com/.well-known/sigil.json) | Ed25519 SPKI DER public key for zero-trust client verification |
 | **Track 2: Scorer** | **Rust WASM Scorer** | [`scorer/src/lib.rs`](scorer/src/lib.rs) (`41.2 KB`) | Freestanding `wasm32-unknown-unknown` module with 100% ordinal benchmark accuracy |
-| **Track 3: App** | **Interactive Web App** | [Sigil Web Dashboard](https://sigil-mssz.onrender.com) *(Vercel Ready)* | Live lookup explorer, WebCrypto Ed25519 verifier & escrow simulator |
+| **Track 3: App** | **Interactive Web App** | [`https://sigil-dashboard-jet.vercel.app`](https://sigil-dashboard-jet.vercel.app) | Live lookup explorer, WebCrypto Ed25519 verifier & escrow simulator |
 | **Track 3: Escrow** | **Base Sepolia Escrow** | [`0x7a819b35cf8232938b812efc4a921d4c84305912`](https://sepolia.basescan.org/address/0x7a819b35cf8232938b812efc4a921d4c84305912) | ERC-8183 finality-gated settlement smart contract |
 | **Evidence** | **Empirical Data** | [`evidence/`](evidence/) | Competitive audit (12 miners), verified flag bug repro, $87k control-arm study |
 
@@ -141,8 +141,9 @@ We executed a causal ablation study comparing **Arm A (Naive Escrow)** vs **Arm 
 * *Full empirical dataset documented in [`evidence/control-arm.md`](evidence/control-arm.md).*
 
 ### Interactive Web Dashboard (`dashboard/`)
-* Static SPA (HTML5, Vanilla JS, CSS3) ready for zero-config **Vercel** deployment.
-* Integrated live lookup playground connected to Render backend.
+* **Live Production App**: [`https://sigil-dashboard-jet.vercel.app`](https://sigil-dashboard-jet.vercel.app)
+* Static SPA (HTML5, Vanilla JS, CSS3) deployed directly to Vercel.
+* Integrated live lookup playground connected to Render miner backend.
 * **Client-Side WebCrypto Ed25519 Verification**: Verifies response authenticity directly in the browser using the Web Cryptography API (`crypto.subtle.verify`).
 * Interactive Escrow Simulator showing live finality gate transitions.
 

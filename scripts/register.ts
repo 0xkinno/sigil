@@ -41,7 +41,9 @@ async function verifyRegistration(minerId?: string): Promise<void> {
         process.stdout.write(JSON.stringify(found, null, 2));
         process.stdout.write('\n');
       } else {
-        process.stdout.write(`❌ Miner with ID "${minerId}" not found. Is registration complete?\n`);
+        process.stdout.write(
+          `❌ Miner with ID "${minerId}" not found. Is registration complete?\n`,
+        );
       }
     } else {
       // Search by slug

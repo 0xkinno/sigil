@@ -17,6 +17,7 @@ Thumbs.db
 .idea/
 
 *.tsbuildinfo
+.vercel/
 reference/
 references/
 target/

@@ -52,7 +52,10 @@ export function initAttestationKeys(): void {
       };
       return;
     } catch (err) {
-      console.warn('[Attestation] Failed to parse ATTESTATION_PRIVATE_KEY from env, generating fresh pair:', err);
+      console.warn(
+        '[Attestation] Failed to parse ATTESTATION_PRIVATE_KEY from env, generating fresh pair:',
+        err,
+      );
     }
   }
 
@@ -85,11 +88,9 @@ export function signCanonical(canonical: string): Attestation {
   }
 
   const pubKeyBase64 = getPublicKeySpkiBase64();
-  const signature = crypto.sign(
-    null,
-    Buffer.from(canonical, 'utf8'),
-    keyPair!.privateKey as crypto.KeyLike
-  ).toString('base64');
+  const signature = crypto
+    .sign(null, Buffer.from(canonical, 'utf8'), keyPair!.privateKey)
+    .toString('base64');
 
   return {
     algorithm: 'ed25519',
@@ -114,7 +115,7 @@ export function verifyAttestation(attestation: Attestation): boolean {
       null,
       Buffer.from(attestation.canonical, 'utf8'),
       pubKey,
-      Buffer.from(attestation.signature, 'base64')
+      Buffer.from(attestation.signature, 'base64'),
     );
   } catch {
     return false;

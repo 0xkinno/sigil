@@ -64,19 +64,24 @@ async function fetchWithTimeout(url: string, timeoutMs = 8000): Promise<Response
   }
 }
 
-async function auditMiner(miner: MinerSchema & { total_requests_served?: number }): Promise<AuditResult> {
+async function auditMiner(
+  miner: MinerSchema & { total_requests_served?: number },
+): Promise<AuditResult> {
   const result: AuditResult = {
     id: miner.id,
     name: miner.name || miner.slug,
     slug: miner.slug,
     baseUrl: miner.base_url || '',
-    yamlUrl: miner.yaml_url || (miner.base_url ? `${miner.base_url.replace(/\/$/, '')}/miner.yaml` : ''),
+    yamlUrl:
+      miner.yaml_url || (miner.base_url ? `${miner.base_url.replace(/\/$/, '')}/miner.yaml` : ''),
     yamlReachable: false,
     hasOnChainRequest: false,
     hasFinalityTier: false,
     hasSignedAttestation: false,
-    ...(miner.total_requests_served !== undefined ? { totalRequestsServed: miner.total_requests_served } : {}),
-    notes: ''
+    ...(miner.total_requests_served !== undefined
+      ? { totalRequestsServed: miner.total_requests_served }
+      : {}),
+    notes: '',
   };
 
   if (!result.yamlUrl) {
@@ -101,7 +106,11 @@ async function auditMiner(miner: MinerSchema & { total_requests_served?: number 
     try {
       const parsed = YAML.parse(yamlText) as ParsedYaml;
       if (parsed) {
-        if (parsed.on_chain?.request && Array.isArray(parsed.on_chain.request) && parsed.on_chain.request.length > 0) {
+        if (
+          parsed.on_chain?.request &&
+          Array.isArray(parsed.on_chain.request) &&
+          parsed.on_chain.request.length > 0
+        ) {
           result.hasOnChainRequest = true;
         }
 
@@ -121,7 +130,10 @@ async function auditMiner(miner: MinerSchema & { total_requests_served?: number 
 
   // Also check miner endpoints description from devnode API
   if (miner.output_schema?.properties) {
-    if ('finality_tier' in miner.output_schema.properties || 'finality' in miner.output_schema.properties) {
+    if (
+      'finality_tier' in miner.output_schema.properties ||
+      'finality' in miner.output_schema.properties
+    ) {
       result.hasFinalityTier = true;
     }
     if ('attestation' in miner.output_schema.properties) {
@@ -132,7 +144,10 @@ async function auditMiner(miner: MinerSchema & { total_requests_served?: number 
   // Check well-known endpoint for attestation key
   if (result.baseUrl) {
     try {
-      const wkRes = await fetchWithTimeout(`${result.baseUrl.replace(/\/$/, '')}/.well-known/sigil.json`, 3000);
+      const wkRes = await fetchWithTimeout(
+        `${result.baseUrl.replace(/\/$/, '')}/.well-known/sigil.json`,
+        3000,
+      );
       if (wkRes.ok) {
         result.hasSignedAttestation = true;
       }
@@ -152,7 +167,9 @@ export async function runAudit(): Promise<AuditResult[]> {
   }
 
   const miners = (await response.json()) as (MinerSchema & { total_requests_served?: number })[];
-  console.log(`[Audit] Found ${miners.length} registered ONCHAIN_TX_LOOKUP miners. Auditing YAML and endpoints...`);
+  console.log(
+    `[Audit] Found ${miners.length} registered ONCHAIN_TX_LOOKUP miners. Auditing YAML and endpoints...`,
+  );
 
   const results: AuditResult[] = [];
   for (const miner of miners) {
@@ -167,7 +184,11 @@ export async function runAudit(): Promise<AuditResult[]> {
   if (fs.existsSync(sigilYamlPath)) {
     const content = fs.readFileSync(sigilYamlPath, 'utf8');
     const parsed = YAML.parse(content) as ParsedYaml;
-    if (parsed.on_chain?.request && Array.isArray(parsed.on_chain.request) && parsed.on_chain.request.length > 0) {
+    if (
+      parsed.on_chain?.request &&
+      Array.isArray(parsed.on_chain.request) &&
+      parsed.on_chain.request.length > 0
+    ) {
       sigilHasOnChain = true;
     }
   }
@@ -175,9 +196,9 @@ export async function runAudit(): Promise<AuditResult[]> {
   // Generate markdown report
   const nowIso = new Date().toISOString();
   const totalMiners = results.length;
-  const onChainCapable = results.filter(r => r.hasOnChainRequest).length;
-  const finalityAware = results.filter(r => r.hasFinalityTier).length;
-  const attestationSigned = results.filter(r => r.hasSignedAttestation).length;
+  const onChainCapable = results.filter((r) => r.hasOnChainRequest).length;
+  const finalityAware = results.filter((r) => r.hasFinalityTier).length;
+  const attestationSigned = results.filter((r) => r.hasSignedAttestation).length;
 
   let md = `# ONCHAIN_TX_LOOKUP Competitive Audit\n\n`;
   md += `**Audit Date:** ${nowIso}\n`;
@@ -221,7 +242,7 @@ export async function runAudit(): Promise<AuditResult[]> {
 }
 
 if (process.argv[1]?.endsWith('audit-competitors.ts')) {
-  runAudit().catch(err => {
+  runAudit().catch((err) => {
     console.error('[Audit Error]', err);
     process.exit(1);
   });

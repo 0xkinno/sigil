@@ -25,10 +25,14 @@ async function pingChain(name: string, url: string): Promise<void> {
   try {
     const result = await queryTransaction(url, BASE_TX, 10_000);
     const ms = Date.now() - start;
-    out(`✅ ${name.padEnd(10)} chain_id=${String(result.chainId).padStart(6)}  status=${result.status}  block=${String(result.currentBlockNumber)}  (${ms}ms)`);
+    out(
+      `✅ ${name.padEnd(10)} chain_id=${String(result.chainId).padStart(6)}  status=${result.status}  block=${String(result.currentBlockNumber)}  (${ms}ms)`,
+    );
   } catch (err) {
     const ms = Date.now() - start;
-    out(`❌ ${name.padEnd(10)} ERROR: ${err instanceof Error ? err.message : String(err)}  (${ms}ms)`);
+    out(
+      `❌ ${name.padEnd(10)} ERROR: ${err instanceof Error ? err.message : String(err)}  (${ms}ms)`,
+    );
   }
 }
 
@@ -37,19 +41,19 @@ out('Provider A (Alchemy mainnet):');
 
 await Promise.all([
   pingChain('ethereum', registry.ethereum.providerAUrl),
-  pingChain('base',     registry.base.providerAUrl),
+  pingChain('base', registry.base.providerAUrl),
   pingChain('arbitrum', registry.arbitrum.providerAUrl),
   pingChain('optimism', registry.optimism.providerAUrl),
-  pingChain('polygon',  registry.polygon.providerAUrl),
+  pingChain('polygon', registry.polygon.providerAUrl),
 ]);
 
 out('\nProvider B (public RPCs):');
 await Promise.all([
   pingChain('ethereum', registry.ethereum.providerBUrl),
-  pingChain('base',     registry.base.providerBUrl),
+  pingChain('base', registry.base.providerBUrl),
   pingChain('arbitrum', registry.arbitrum.providerBUrl),
   pingChain('optimism', registry.optimism.providerBUrl),
-  pingChain('polygon',  registry.polygon.providerBUrl),
+  pingChain('polygon', registry.polygon.providerBUrl),
 ]);
 
 out('\n' + '='.repeat(60));

@@ -176,7 +176,15 @@ async function probeOne(fixture: Fixture): Promise<SignalRecord> {
   } catch (err) {
     const duration_ms = Date.now() - start;
     const error = err instanceof Error ? err.message : String(err);
-    return { fixture, signal_hash: null, cost_usd: null, duration_ms, status: 0, result: null, error };
+    return {
+      fixture,
+      signal_hash: null,
+      cost_usd: null,
+      duration_ms,
+      status: 0,
+      result: null,
+      error,
+    };
   }
 }
 
@@ -251,7 +259,9 @@ for (const fixture of FIXTURES) {
     const statusIcon = record.status === 200 ? '✅' : '⚠️';
     out(`\n   ${statusIcon} Status:      ${record.status}  (${record.duration_ms}ms)`);
     out(`   Signal hash: ${record.signal_hash ?? 'not in response'}`);
-    out(`   Cost:        ${record.cost_usd !== null ? `$${String(record.cost_usd)}` : 'not in response'}`);
+    out(
+      `   Cost:        ${record.cost_usd !== null ? `$${String(record.cost_usd)}` : 'not in response'}`,
+    );
     out(
       `   Result:\n${JSON.stringify(record.result, null, 4)
         .split('\n')

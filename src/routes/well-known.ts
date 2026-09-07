@@ -22,12 +22,7 @@ wellKnownRouter.get('/sigil.json', (_req, res) => {
     },
     capabilities: {
       dual_rpc_consensus: true,
-      finality_tiers: [
-        'sequencer_soft',
-        'l1_posted',
-        'l1_finalized',
-        'native_finalized',
-      ],
+      finality_tiers: ['sequencer_soft', 'l1_posted', 'l1_finalized', 'native_finalized'],
       signed_attestation: true,
       on_chain_jobs: true,
     },

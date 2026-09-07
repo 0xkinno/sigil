@@ -47,13 +47,17 @@ async function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T
   }
 }
 
-async function fetchBlockByTag(rpcUrl: string, tag: 'safe' | 'finalized', timeoutMs: number): Promise<BlockTagResult | null> {
+async function fetchBlockByTag(
+  rpcUrl: string,
+  tag: 'safe' | 'finalized',
+  timeoutMs: number,
+): Promise<BlockTagResult | null> {
   if (!rpcUrl) return null;
   try {
     const provider = getProvider(rpcUrl);
     const raw = (await withTimeout(
       provider.send('eth_getBlockByNumber', [tag, false]),
-      timeoutMs
+      timeoutMs,
     )) as { number?: string; timestamp?: string } | null;
 
     if (!raw || !raw.number) {
@@ -79,10 +83,11 @@ export async function computeFinalityTier(
   txBlockNumber: number | null,
   currentBlockNumber: number,
   rpcUrl: string,
-  timeoutMs = 4000
+  timeoutMs = 4000,
 ): Promise<FinalityCalculationResult> {
   const config = getChainConfig(chain);
-  const confirmations = txBlockNumber === null ? 0 : Math.max(0, currentBlockNumber - txBlockNumber + 1);
+  const confirmations =
+    txBlockNumber === null ? 0 : Math.max(0, currentBlockNumber - txBlockNumber + 1);
 
   let depthCategory: DepthCategory = 'shallow';
   if (confirmations >= config.finalityDepth) {
@@ -380,7 +385,7 @@ export async function computeFinalityTier(
       finalized: confirmations >= config.finalityDepth,
       depth_category: depthCategory,
       finality_tier: confirmations >= config.finalityDepth ? 'native_finalized' : 'sequencer_soft',
-      finality_reason: `Calculated from confirmation depth ${confirmations} on ${chain}.`,
+      finality_reason: `Calculated from confirmation depth ${confirmations} on ${config.name}.`,
     };
     return {
       finalityTier: finality.finality_tier,

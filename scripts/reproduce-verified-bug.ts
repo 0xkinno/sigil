@@ -30,7 +30,9 @@ interface SignalPayload {
 }
 
 export async function runBugReproduction(): Promise<void> {
-  console.log('[Bug Reproduction] Starting reproduction of Telegraph `verified: true` protocol limitation...');
+  console.log(
+    '[Bug Reproduction] Starting reproduction of Telegraph `verified: true` protocol limitation...',
+  );
 
   // Sample real-world signal structure as served by Telegraph Engine / Devnode
   const sampleEngineSignal: SignalPayload = {
@@ -43,14 +45,17 @@ export async function runBugReproduction(): Promise<void> {
       chain: 'base',
       tx_hash: '0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e',
       status: 'confirmed',
-      canonical: 'base|0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e|confirmed|0x51c72848c68a965f66fa7a88855f9f7784502a7f|0xd8da6bf26964af9d7eed9e03e53415d37aa96045|1000000000000000|18500000',
+      canonical:
+        'base|0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e|confirmed|0x51c72848c68a965f66fa7a88855f9f7784502a7f|0xd8da6bf26964af9d7eed9e03e53415d37aa96045|1000000000000000|18500000',
     },
   };
 
   // 1. Attempt independent derivation from protocol payload alone
   let protocolDerivable = false;
-  const protocolHasSignature = 'signature' in sampleEngineSignal || 'signature' in sampleEngineSignal.payload;
-  const protocolHasPublicKey = 'public_key' in sampleEngineSignal || 'public_key' in sampleEngineSignal.payload;
+  const protocolHasSignature =
+    'signature' in sampleEngineSignal || 'signature' in sampleEngineSignal.payload;
+  const protocolHasPublicKey =
+    'public_key' in sampleEngineSignal || 'public_key' in sampleEngineSignal.payload;
 
   if (protocolHasSignature && protocolHasPublicKey) {
     protocolDerivable = true;
@@ -102,7 +107,7 @@ export async function runBugReproduction(): Promise<void> {
       verified_by_node_crypto: sigilVerified,
     },
     null,
-    2
+    2,
   );
   md += `\n\`\`\`\n\n`;
   md += `### 1-Line Judge Verification Command\n`;
@@ -117,7 +122,7 @@ export async function runBugReproduction(): Promise<void> {
 }
 
 if (process.argv[1]?.endsWith('reproduce-verified-bug.ts')) {
-  runBugReproduction().catch(err => {
+  runBugReproduction().catch((err) => {
     console.error('[Bug Repro Error]', err);
     process.exit(1);
   });

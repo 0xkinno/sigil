@@ -39,9 +39,7 @@ try {
   process.stdout.write(`   confidence: ${String(body.confidence)}\n`);
 
   if (body.evidence !== null && body.evidence !== undefined) {
-    process.stdout.write(
-      `   providers_agreed: ${String(body.evidence.providers_agreed)}\n`,
-    );
+    process.stdout.write(`   providers_agreed: ${String(body.evidence.providers_agreed)}\n`);
   }
   process.exit(0);
 } catch (err) {
