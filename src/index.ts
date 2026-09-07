@@ -32,6 +32,10 @@ export function createApp(): Express {
   app.use(lookupRouter);
   app.use(yamlRouter);
   app.use('/.well-known', wellKnownRouter);
+  app.get('/sigil_scorer.wasm', (_req, res) => {
+    res.setHeader('Content-Type', 'application/wasm');
+    res.sendFile('sigil_scorer.wasm', { root: 'scorer' });
+  });
 
   // Fallthrough handlers
   app.use(notFoundHandler);
