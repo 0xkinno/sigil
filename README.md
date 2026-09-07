@@ -1,5 +1,14 @@
 # SIGIL — Multi-Chain L2 Finality, Cryptographic Attestation & Deterministic Scoring Engine
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://img.shields.io/badge/CI-passing-brightgreen.svg)](https://github.com/0xkinno/sigil)
+[![Tests](https://img.shields.io/badge/tests-101%20passing-brightgreen.svg)](test/)
+[![WASM Scorer](https://img.shields.io/badge/WASM%20Scorer-100%25%20ordinal-blue.svg)](scorer/)
+[![Telegraph Miner](https://img.shields.io/badge/Telegraph%20Miner-%239010-orange.svg)](https://explorer.telegraphprotocol.com/miners/sigil-onchain-lookup)
+[![Base Sepolia](https://img.shields.io/badge/Base%20Sepolia-0x7a81...5912-blueviolet.svg)](https://sepolia.basescan.org/address/0x7a819b35cf8232938b812efc4a921d4c84305912)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
+[![Rust](https://img.shields.io/badge/Rust-WASM32-orange.svg)](scorer/Cargo.toml)
+
 > **Sigil solves the fundamental flaw in on-chain transaction lookup: distinguishing soft sequencer execution from true Layer-1 finality, backed by zero-trust cryptographic attestations, a standalone Rust WASM scorer, and finality-gated settlement contracts.**
 
 ![Sigil Architecture and Verification Hero](docs/hero-banner.jpg)
