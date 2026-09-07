@@ -8,8 +8,9 @@ description: >-
   Dual-RPC verified EVM transaction lookup across Ethereum, Base, Arbitrum,
   Optimism and Polygon. Two independent providers must agree on critical
   transaction facts before any result is returned. Reports native value,
-  ERC-20 transfer effects, confirmation depth confidence, and a compact
-  canonical payload for deterministic scoring.
+  ERC-20 transfer effects, multi-chain L2/L1 finality tiers (sequencer_soft,
+  l1_posted, l1_finalized, native_finalized), Ed25519 cryptographic attestation,
+  and a compact canonical payload for deterministic scoring.
 base_url: https://sigil-mssz.onrender.com
 
 endpoints:
@@ -18,7 +19,12 @@ endpoints:
     method: GET
     description: >-
       Look up a transaction on a supported EVM chain. Returns status,
-      canonical scoring field, transfer effects, and dual-RPC evidence.
+      canonical scoring field, transfer effects, L2 finality tier, and dual-RPC evidence.
+  - path: /lookup
+    external_path: /lookup
+    method: POST
+    description: >-
+      POST interface for looking up transaction status and finality tier on a supported EVM chain.
 
 semantics:
   signal_mapping:
@@ -28,10 +34,53 @@ semantics:
   supported_intents:
     - ONCHAIN_TX_LOOKUP
 
-rate_limit_per_sec: 5
+rate_limit_per_sec: 10
 cache_ttl_sec: 0
 circuit_threshold: 5
 circuit_cooldown_seconds: 30
+
+on_chain:
+  transform: direct
+  min_price_usdc: 0.01
+  fields:
+    strings:
+      - index: 0
+        name: chain
+        source_path: chain
+        description: The EVM chain queried (ethereum, base, arbitrum, optimism, polygon).
+      - index: 1
+        name: tx_hash
+        source_path: tx_hash
+        description: The transaction hash queried (0x-prefixed 64 hex characters).
+      - index: 2
+        name: status
+        source_path: status
+        description: Transaction status (confirmed, reverted, pending, not_found, error).
+      - index: 3
+        name: finality_tier
+        source_path: finality_tier
+        description: L2/L1 finality tier (sequencer_soft, l1_posted, l1_finalized, native_finalized, unknown).
+      - index: 4
+        name: canonical
+        source_path: canonical
+        description: Deterministic 7-field pipe-delimited canonical string.
+    integers:
+      - index: 0
+        name: block_number
+        source_path: block_number
+        description: Block number the transaction was included in.
+      - index: 1
+        name: chain_id
+        source_path: chain_id
+        description: EIP-155 integer chain ID.
+  request:
+    - endpoint: lookup
+      method: GET
+      query_params:
+        chain:
+          source: strings.0
+        tx_hash:
+          source: strings.1
 
 input_schema:
   type: object
@@ -63,41 +112,71 @@ output_schema:
     - canonical
     - confidence
     - summary
+    - finality_tier
+    - attestation
   properties:
     chain:
       type: string
+      description: Target EVM chain name.
     chain_id:
       type: integer
+      description: EIP-155 chain ID.
     tx_hash:
       type: string
+      description: 64-hex transaction hash.
     status:
       type: string
+      description: Execution outcome status.
     block_number:
       type: string
+      description: Included block number as string.
     from:
       type: string
+      description: Originating sender address.
     to:
       type: string
+      description: Destination recipient or contract address.
     value_wei:
       type: string
+      description: Native token transfer amount in wei.
     canonical:
       type: string
+      description: Pipe-separated deterministic canonical string.
     confidence:
       type: number
+      description: Numerical confidence score between 0.0 and 1.0.
     summary:
       type: string
+      description: Human-readable verification summary and finality details.
+    finality_tier:
+      type: string
+      enum:
+        - sequencer_soft
+        - l1_posted
+        - l1_finalized
+        - native_finalized
+        - unknown
+      description: Verified L2/L1 finality stage.
+    attestation:
+      type: object
+      description: Cryptographic Ed25519 miner signature over canonical fields.
     effects:
       type: array
+      description: Decoded ERC-20 token transfer events.
       items:
         type: object
     finality:
       type: object
+      description: Detailed finality breakdown and confirmation depth metrics.
     evidence:
       type: object
+      description: Dual-RPC consensus timing and agreement proof.
     error_code:
       type: string
+      description: Structured error code if request failed closed.
     error_detail:
       type: string
+      description: Detailed error explanation.
 
 docs:
   repository: https://github.com/0xkinno/sigil

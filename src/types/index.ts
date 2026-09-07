@@ -119,15 +119,33 @@ export interface Erc20TransferEffect {
 export type Effect = Erc20TransferEffect;
 
 // ---------------------------------------------------------------------------
-// Confidence / finality
+// Confidence / finality / attestation
 // ---------------------------------------------------------------------------
 
 export type DepthCategory = 'shallow' | 'moderate' | 'deep';
+
+export type FinalityTier =
+  | 'sequencer_soft'
+  | 'l1_posted'
+  | 'l1_finalized'
+  | 'native_finalized'
+  | 'unknown';
 
 export interface Finality {
   readonly confirmations: number;
   readonly finalized: boolean;
   readonly depth_category: DepthCategory;
+  readonly finality_tier: FinalityTier;
+  readonly l1_block_number?: number | null;
+  readonly l1_batch_status?: string | null;
+  readonly finality_reason?: string;
+}
+
+export interface Attestation {
+  readonly algorithm: 'ed25519';
+  readonly canonical: string;
+  readonly signature: string;
+  readonly public_key: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -165,6 +183,8 @@ export interface LookupSuccessResponse {
   readonly summary: string;
   readonly effects: readonly Effect[];
   readonly finality: Finality | null;
+  readonly finality_tier: FinalityTier;
+  readonly attestation: Attestation | null;
   readonly evidence: Evidence | null;
   readonly error_code: null;
   readonly error_detail: null;
@@ -181,6 +201,8 @@ export interface LookupErrorResponse {
   readonly summary: string;
   readonly effects: readonly [];
   readonly finality: null;
+  readonly finality_tier: 'unknown';
+  readonly attestation: null;
   readonly evidence: null;
   readonly error_code: ErrorCode;
   readonly error_detail: string;

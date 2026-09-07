@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lookup — SIGIL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/globals.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <link rel="stylesheet" href="css/lookup.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-brand" href="index.html"><span class="nav-sigil">⬡</span> SIGIL</a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">/ home</a>
+      <a href="lookup.html" class="nav-link nav-active">/ lookup</a>
+      <a href="proof.html" class="nav-link">/ proof</a>
+      <a href="signals.html" class="nav-link">/ signals</a>
+    </div>
+    <div class="nav-status">
+      <span class="status-dot" id="nav-status-dot"></span>
+      <span class="status-label" id="nav-status-label">checking…</span>
+    </div>
+  </nav>
+
+  <main class="lookup-main">
+    <div class="lookup-sidebar">
+      <div class="panel panel-form">
+        <div class="panel-header">TRANSACTION LOOKUP</div>
+        <form id="lookup-form">
+          <label class="field-label">CHAIN</label>
+          <select class="form-select" id="lk-chain" name="chain">
+            <option value="base">base</option>
+            <option value="ethereum">ethereum</option>
+            <option value="arbitrum">arbitrum</option>
+            <option value="optimism">optimism</option>
+            <option value="polygon">polygon</option>
+          </select>
+
+          <label class="field-label">TRANSACTION HASH</label>
+          <input
+            class="form-input hash-input"
+            id="lk-hash"
+            type="text"
+            placeholder="0x…"
+            spellcheck="false"
+            autocomplete="off"
+          />
+
+          <button class="form-btn full-btn" type="submit" id="lk-submit">
+            <span id="lk-btn-label">QUERY MINER</span>
+          </button>
+        </form>
+
+        <div class="fixtures-section">
+          <div class="fixtures-label">KNOWN FIXTURES</div>
+          <button class="fixture-btn" data-chain="base" data-hash="0x373982c25ba2c56c52c30a6db4ea14f9af267d6152f09f14f0b9b43e842e16a7">
+            Base · USDC ERC-20 transfer
+          </button>
+          <button class="fixture-btn" data-chain="ethereum" data-hash="0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060">
+            Ethereum · ETH transfer
+          </button>
+          <button class="fixture-btn" data-chain="arbitrum" data-hash="0x6d903f6003cca508a2975a4691a845d068aed9afe3bf0cda9e39dc5e71726022">
+            Arbitrum · transfer
+          </button>
+          <button class="fixture-btn" data-chain="base" data-hash="0x000000000000000000000000000000000000000000000000000000000000dead">
+            Base · not_found (invalid)
+          </button>
+        </div>
+      </div>
+
+      <div class="panel panel-stats" id="lookup-meta" hidden>
+        <div class="panel-header">QUERY METADATA</div>
+        <div class="meta-row"><span class="meta-key">STATUS</span><span class="meta-val" id="meta-status">—</span></div>
+        <div class="meta-row"><span class="meta-key">CHAIN</span><span class="meta-val" id="meta-chain">—</span></div>
+        <div class="meta-row"><span class="meta-key">CHAIN ID</span><span class="meta-val" id="meta-chainid">—</span></div>
+        <div class="meta-row"><span class="meta-key">BLOCK</span><span class="meta-val" id="meta-block">—</span></div>
+        <div class="meta-row"><span class="meta-key">CONFIDENCE</span><span class="meta-val" id="meta-confidence">—</span></div>
+        <div class="meta-row"><span class="meta-key">PROVIDERS</span><span class="meta-val" id="meta-providers">—</span></div>
+        <div class="meta-row"><span class="meta-key">AGREED</span><span class="meta-val" id="meta-agreed">—</span></div>
+        <div class="meta-row"><span class="meta-key">RESPONSE MS</span><span class="meta-val" id="meta-ms">—</span></div>
+      </div>
+    </div>
+
+    <div class="lookup-content">
+      <div id="lookup-state-idle" class="state-pane state-idle">
+        <div class="idle-icon">⬡</div>
+        <div class="idle-text">Select a fixture or enter a transaction hash to begin.</div>
+      </div>
+
+      <div id="lookup-state-loading" class="state-pane state-loading" hidden>
+        <div class="loading-ring"></div>
+        <div class="loading-text">Querying dual-RPC providers…</div>
+        <div class="loading-sub">Awaiting consensus on both providers</div>
+      </div>
+
+      <div id="lookup-state-result" class="state-pane" hidden>
+
+        <div class="result-section">
+          <div class="result-section-title">CANONICAL STRING</div>
+          <div class="canonical-display" id="res-canonical">—</div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-section-title">TRANSACTION DETAILS</div>
+          <div class="detail-grid">
+            <div class="detail-row"><span class="dk">from</span><span class="dv mono" id="res-from">—</span></div>
+            <div class="detail-row"><span class="dk">to</span><span class="dv mono" id="res-to">—</span></div>
+            <div class="detail-row"><span class="dk">value_wei</span><span class="dv mono" id="res-value">—</span></div>
+            <div class="detail-row"><span class="dk">block</span><span class="dv mono" id="res-block">—</span></div>
+          </div>
+        </div>
+
+        <div class="result-section" id="effects-section" hidden>
+          <div class="result-section-title">ERC-20 EFFECTS <span id="effects-count" class="count-badge"></span></div>
+          <div id="effects-list"></div>
+        </div>
+
+        <div class="result-section" id="finality-section" hidden>
+          <div class="result-section-title">FINALITY</div>
+          <div class="finality-bar-wrap">
+            <div class="finality-bar">
+              <div class="finality-fill" id="finality-fill"></div>
+            </div>
+            <span class="finality-label" id="finality-label">—</span>
+          </div>
+          <div class="detail-grid">
+            <div class="detail-row"><span class="dk">confirmations</span><span class="dv mono" id="res-confs">—</span></div>
+            <div class="detail-row"><span class="dk">finalized</span><span class="dv mono" id="res-finalized">—</span></div>
+            <div class="detail-row"><span class="dk">depth</span><span class="dv mono" id="res-depth">—</span></div>
+          </div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-section-title">SUMMARY</div>
+          <div class="summary-text" id="res-summary">—</div>
+        </div>
+
+        <div class="result-section">
+          <div class="result-section-title">RAW JSON RESPONSE</div>
+          <pre class="raw-json" id="res-raw">—</pre>
+        </div>
+      </div>
+
+      <div id="lookup-state-error" class="state-pane state-error" hidden>
+        <div class="error-icon">⊗</div>
+        <div class="error-code" id="err-code">—</div>
+        <div class="error-detail" id="err-detail">—</div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-row">
+      <span>SIGIL · Telegraph Protocol · Miner #9010</span>
+      <span class="footer-links">
+        <a href="https://sigil-mssz.onrender.com/sigil.yaml" target="_blank" rel="noopener">YAML ↗</a>
+        <a href="https://explorer.telegraphprotocol.com/miners/sigil-onchain-lookup" target="_blank" rel="noopener">Explorer ↗</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/lookup.js"></script>
+</body>
+</html>

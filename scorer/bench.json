@@ -1,0 +1,109 @@
+{
+  "intent": "ONCHAIN_TX_LOOKUP",
+  "cases": [
+    {
+      "question": "What is the status of transaction 0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e on Base?",
+      "ground_truth": "base|0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e|confirmed|0x51c72848c68a965f66fa7a88855f9f7784502a7f|0xd8da6bf26964af9d7eed9e03e53415d37aa96045|1000000000000000|18500000",
+      "answers": [
+        {
+          "label": "exact_canonical",
+          "text": "base|0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e|confirmed|0x51c72848c68a965f66fa7a88855f9f7784502a7f|0xd8da6bf26964af9d7eed9e03e53415d37aa96045|1000000000000000|18500000",
+          "tier": "high"
+        },
+        {
+          "label": "rich_prose_with_finality",
+          "text": "Transaction 0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e is confirmed on Base in block 18500000. From 0x51c72848c68a965f66fa7a88855f9f7784502a7f to 0xd8da6bf26964af9d7eed9e03e53415d37aa96045 with value 1000000000000000 wei. Finality: l1_finalized.",
+          "tier": "high"
+        },
+        {
+          "label": "correct_prose_no_finality",
+          "text": "Confirmed transaction on Base at block 18500000. From 0x51c72848c68a965f66fa7a88855f9f7784502a7f to 0xd8da6bf26964af9d7eed9e03e53415d37aa96045 with 1000000000000000 wei.",
+          "tier": "mid"
+        },
+        {
+          "label": "near_miss_block_attack",
+          "text": "base|0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e|confirmed|0x51c72848c68a965f66fa7a88855f9f7784502a7f|0xd8da6bf26964af9d7eed9e03e53415d37aa96045|1000000000000000|18500001",
+          "tier": "low"
+        },
+        {
+          "label": "swapped_from_to_attack",
+          "text": "base|0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e|confirmed|0xd8da6bf26964af9d7eed9e03e53415d37aa96045|0x51c72848c68a965f66fa7a88855f9f7784502a7f|1000000000000000|18500000",
+          "tier": "low"
+        },
+        {
+          "label": "status_inversion_attack",
+          "text": "base|0x4c2a524b0a70f7d54fd729f27de58a8a4746f32e92cbef6ad6c7ef7e065bc39e|reverted|0x51c72848c68a965f66fa7a88855f9f7784502a7f|0xd8da6bf26964af9d7eed9e03e53415d37aa96045|1000000000000000|18500000",
+          "tier": "low"
+        }
+      ]
+    },
+    {
+      "question": "Did Arbitrum transaction 0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b revert or succeed?",
+      "ground_truth": "arbitrum|0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b|reverted|0x1111111254eeb25477b68fb85ed929f73a960582|0x7a250d5630b4cf539739df2c5dacb4c659f2488d|0|210450123",
+      "answers": [
+        {
+          "label": "exact_canonical",
+          "text": "arbitrum|0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b|reverted|0x1111111254eeb25477b68fb85ed929f73a960582|0x7a250d5630b4cf539739df2c5dacb4c659f2488d|0|210450123",
+          "tier": "high"
+        },
+        {
+          "label": "accurate_reverted_summary",
+          "text": "Transaction 0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b reverted on Arbitrum in block 210450123 from 0x1111111254eeb25477b68fb85ed929f73a960582 to 0x7a250d5630b4cf539739df2c5dacb4c659f2488d.",
+          "tier": "high"
+        },
+        {
+          "label": "false_confirmation_claim",
+          "text": "arbitrum|0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b|confirmed|0x1111111254eeb25477b68fb85ed929f73a960582|0x7a250d5630b4cf539739df2c5dacb4c659f2488d|0|210450123",
+          "tier": "low"
+        },
+        {
+          "label": "wrong_hash_hallucination",
+          "text": "arbitrum|0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|reverted|0x1111111254eeb25477b68fb85ed929f73a960582|0x7a250d5630b4cf539739df2c5dacb4c659f2488d|0|210450123",
+          "tier": "low"
+        }
+      ]
+    },
+    {
+      "question": "Check pending status for 0x3333333333333333333333333333333333333333333333333333333333333333 on Ethereum",
+      "ground_truth": "ethereum|0x3333333333333333333333333333333333333333333333333333333333333333|pending|0x2222222222222222222222222222222222222222|0x4444444444444444444444444444444444444444|50000000000000000|",
+      "answers": [
+        {
+          "label": "exact_canonical",
+          "text": "ethereum|0x3333333333333333333333333333333333333333333333333333333333333333|pending|0x2222222222222222222222222222222222222222|0x4444444444444444444444444444444444444444|50000000000000000|",
+          "tier": "high"
+        },
+        {
+          "label": "pending_summary",
+          "text": "Transaction 0x3333333333333333333333333333333333333333333333333333333333333333 is pending in Ethereum mempool. Sender 0x2222222222222222222222222222222222222222 to 0x4444444444444444444444444444444444444444 value 50000000000000000 wei.",
+          "tier": "high"
+        },
+        {
+          "label": "fabricated_block_confirmed",
+          "text": "ethereum|0x3333333333333333333333333333333333333333333333333333333333333333|confirmed|0x2222222222222222222222222222222222222222|0x4444444444444444444444444444444444444444|50000000000000000|20500123",
+          "tier": "low"
+        }
+      ]
+    },
+    {
+      "question": "Is 0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef on Polygon valid?",
+      "ground_truth": "polygon|0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef|not_found||||",
+      "answers": [
+        {
+          "label": "exact_canonical",
+          "text": "polygon|0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef|not_found||||",
+          "tier": "high"
+        },
+        {
+          "label": "not_found_prose",
+          "text": "No transaction with hash 0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef exists on Polygon (not_found).",
+          "tier": "high"
+        },
+        {
+          "label": "fabricated_confirmed",
+          "text": "polygon|0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef|confirmed|0x1111111111111111111111111111111111111111|0x2222222222222222222222222222222222222222|0|60000000",
+          "tier": "low"
+        }
+      ]
+    }
+  ]
+}

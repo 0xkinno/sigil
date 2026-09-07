@@ -11,6 +11,12 @@
     "build": "esbuild src/index.ts --bundle --platform=node --target=node20 --format=esm --outfile=dist/index.js --packages=external",
     "start": "node dist/index.js",
     "dev": "node --import tsx src/index.ts",
+    "dashboard": "npx serve dashboard -l 4000 --cors",
+    "probe": "npx tsx scripts/probe-engine.ts",
+    "audit": "npx tsx scripts/audit-competitors.ts",
+    "reproduce-bug": "npx tsx scripts/reproduce-verified-bug.ts",
+    "test:scorer": "npx tsx scorer/test-scorer.ts",
+    "control-arm": "npx tsx scripts/control-arm-test.ts",
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
@@ -37,7 +43,8 @@
     "ethers": "^6.17.0",
     "express": "^5.2.1",
     "express-rate-limit": "^8.6.2",
-    "helmet": "^8.3.0"
+    "helmet": "^8.3.0",
+    "yaml": "^2.9.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -46,11 +53,14 @@
     "@types/supertest": "^7.2.1",
     "@typescript-eslint/eslint-plugin": "^8.68.0",
     "@typescript-eslint/parser": "^8.68.0",
+    "@x402/evm": "^2.23.0",
+    "@x402/fetch": "^2.23.0",
     "eslint": "^10.9.1",
     "prettier": "^3.9.6",
     "supertest": "^7.2.2",
     "tsx": "^4.23.12",
     "typescript": "^5.9.3",
+    "viem": "^2.55.19",
     "vitest": "^4.1.11"
   }
 }

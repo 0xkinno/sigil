@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signals — SIGIL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/globals.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <link rel="stylesheet" href="css/signals.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-brand" href="index.html"><span class="nav-sigil">⬡</span> SIGIL</a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">/ home</a>
+      <a href="lookup.html" class="nav-link">/ lookup</a>
+      <a href="proof.html" class="nav-link">/ proof</a>
+      <a href="signals.html" class="nav-link nav-active">/ signals</a>
+    </div>
+    <div class="nav-status">
+      <span class="status-dot" id="nav-status-dot"></span>
+      <span class="status-label" id="nav-status-label">checking…</span>
+    </div>
+  </nav>
+
+  <main class="signals-main">
+    <div class="signals-header">
+      <div>
+        <h1 class="signals-title">Live Signal Feed</h1>
+        <p class="signals-sub">Real transactions being verified by Sigil right now. Every entry is a dual-RPC consensus lookup routed through the Telegraph Engine.</p>
+      </div>
+      <div class="signals-controls">
+        <button class="ctrl-btn ctrl-btn-active" id="ctrl-refresh" title="Refresh">
+          ↻ Refresh
+        </button>
+        <button class="ctrl-btn" id="ctrl-batchrun" title="Run batch probe across all 5 chains">
+          ⬡ Run Batch Probe
+        </button>
+      </div>
+    </div>
+
+    <div class="signals-stats-row">
+      <div class="sig-stat">
+        <span class="sig-stat-val" id="sigs-total">–</span>
+        <span class="sig-stat-label">Total Lookups</span>
+      </div>
+      <div class="sig-stat">
+        <span class="sig-stat-val" id="sigs-success">–</span>
+        <span class="sig-stat-label">Successful</span>
+      </div>
+      <div class="sig-stat">
+        <span class="sig-stat-val" id="sigs-agreed">–</span>
+        <span class="sig-stat-label">Both Providers Agreed</span>
+      </div>
+      <div class="sig-stat">
+        <span class="sig-stat-val" id="sigs-avg-ms">–</span>
+        <span class="sig-stat-label">Avg Response ms</span>
+      </div>
+      <div class="sig-stat">
+        <span class="sig-stat-val" id="sigs-chains">–</span>
+        <span class="sig-stat-label">Chains Active</span>
+      </div>
+    </div>
+
+    <div class="signals-feed-wrap">
+      <div class="signals-feed-header">
+        <span class="col-ts">TIMESTAMP</span>
+        <span class="col-chain">CHAIN</span>
+        <span class="col-status">STATUS</span>
+        <span class="col-canonical">CANONICAL (truncated)</span>
+        <span class="col-conf">CONF</span>
+        <span class="col-ms">MS</span>
+      </div>
+      <div id="signals-feed-body">
+        <div class="feed-empty">
+          <div class="feed-empty-icon">⬡</div>
+          <div class="feed-empty-text">No signals yet in this session.</div>
+          <div class="feed-empty-sub">
+            Use the lookup page to query transactions, or run a batch probe.<br/>
+            Signals appear here in real time as lookups complete.
+          </div>
+          <button class="feed-cta" id="feed-cta-lookup">Open Lookup ↗</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="signals-batch-panel" id="signals-batch-panel" hidden>
+      <div class="batch-header">
+        <span>BATCH PROBE — All 5 Chains</span>
+        <button class="batch-close" id="batch-close">✕</button>
+      </div>
+      <p class="batch-desc">
+        This will send 5 lookup requests (one per chain) directly to the live Sigil miner endpoint
+        and display the results below. No x402 payment required — this calls Sigil directly via
+        <code>GET /lookup</code>.
+      </p>
+      <button class="form-btn" id="batch-run-btn">RUN PROBE NOW</button>
+      <div id="batch-results"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-row">
+      <span>SIGIL · Telegraph Protocol · Miner #9010</span>
+      <span class="footer-links">
+        <a href="https://explorer.telegraphprotocol.com/miners/sigil-onchain-lookup" target="_blank" rel="noopener">Explorer ↗</a>
+        <a href="https://github.com/0xkinno/sigil" target="_blank" rel="noopener">GitHub ↗</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/signals.js"></script>
+</body>
+</html>

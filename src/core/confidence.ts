@@ -28,5 +28,12 @@ export function computeFinality(
     depthCategory = 'deep';
   }
 
-  return { confirmations, finalized, depth_category: depthCategory };
+  const finalityTier = finalized ? 'native_finalized' : 'sequencer_soft';
+
+  return {
+    confirmations,
+    finalized,
+    depth_category: depthCategory,
+    finality_tier: finalityTier,
+  };
 }

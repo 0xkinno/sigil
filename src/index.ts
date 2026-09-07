@@ -10,11 +10,14 @@ import { NODE_ENV, PORT } from './config.js';
 import { errorHandler, notFoundHandler } from './middleware/error-handler.js';
 import { rateLimiter } from './middleware/rate-limit.js';
 import { requestLogger } from './middleware/request-logger.js';
+import { initAttestationKeys } from './core/attestation.js';
 import { healthRouter } from './routes/health.js';
 import { lookupRouter } from './routes/lookup.js';
+import { wellKnownRouter } from './routes/well-known.js';
 import { yamlRouter } from './routes/yaml.js';
 
 export function createApp(): Express {
+  initAttestationKeys();
   const app = express();
 
   app.disable('x-powered-by');
@@ -28,6 +31,7 @@ export function createApp(): Express {
   app.use(healthRouter);
   app.use(lookupRouter);
   app.use(yamlRouter);
+  app.use('/.well-known', wellKnownRouter);
 
   // Fallthrough handlers
   app.use(notFoundHandler);

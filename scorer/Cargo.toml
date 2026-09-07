@@ -1,0 +1,18 @@
+[package]
+name = "sigil-scorer"
+version = "0.2.0"
+edition = "2021"
+description = "Deterministic WASM scoring module for ONCHAIN_TX_LOOKUP on Telegraph Protocol"
+
+[lib]
+name = "sigil_scorer"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

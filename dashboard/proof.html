@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proof — SIGIL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/globals.css" />
+  <link rel="stylesheet" href="css/nav.css" />
+  <link rel="stylesheet" href="css/proof.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a class="nav-brand" href="index.html"><span class="nav-sigil">⬡</span> SIGIL</a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">/ home</a>
+      <a href="lookup.html" class="nav-link">/ lookup</a>
+      <a href="proof.html" class="nav-link nav-active">/ proof</a>
+      <a href="signals.html" class="nav-link">/ signals</a>
+    </div>
+    <div class="nav-status">
+      <span class="status-dot" id="nav-status-dot"></span>
+      <span class="status-label" id="nav-status-label">checking…</span>
+    </div>
+  </nav>
+
+  <main class="proof-main">
+    <div class="proof-header">
+      <h1 class="proof-title">Registration &amp; Evidence</h1>
+      <p class="proof-sub">All on-chain proofs, signal hashes, and canonical fixtures for Sigil — Miner ID 9010</p>
+    </div>
+
+    <div class="proof-grid">
+
+      <section class="proof-card proof-card-wide">
+        <div class="proof-card-header">
+          <span class="proof-card-icon">◈</span> MINER REGISTRATION
+        </div>
+        <div class="proof-table">
+          <div class="proof-row">
+            <span class="pk">Miner ID</span>
+            <span class="pv mono">9010</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Slug</span>
+            <span class="pv mono">sigil-onchain-lookup</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Registration ID</span>
+            <span class="pv mono">219</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Intent</span>
+            <span class="pv mono">ONCHAIN_TX_LOOKUP</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Status</span>
+            <span class="pv"><span class="badge badge-green">ACTIVE</span></span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Network</span>
+            <span class="pv mono">Base Sepolia (testnet registration)</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Wallet</span>
+            <span class="pv mono addr">0x44be5240559880f39ba5604D33486Da4d8A48527</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Live Endpoint</span>
+            <span class="pv"><a href="https://sigil-mssz.onrender.com/health" target="_blank" rel="noopener" class="proof-link">https://sigil-mssz.onrender.com ↗</a></span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Explorer</span>
+            <span class="pv"><a href="https://explorer.telegraphprotocol.com/miners/sigil-onchain-lookup" target="_blank" rel="noopener" class="proof-link">explorer.telegraphprotocol.com ↗</a></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="proof-card">
+        <div class="proof-card-header">
+          <span class="proof-card-icon">⬡</span> ENDPOINT HEALTH
+        </div>
+        <div class="proof-health" id="proof-health">
+          <div class="health-loading">Checking live endpoints…</div>
+        </div>
+        <a href="https://sigil-mssz.onrender.com/ready" target="_blank" rel="noopener" class="proof-link proof-link-sm">View /ready ↗</a>
+      </section>
+
+      <section class="proof-card">
+        <div class="proof-card-header">
+          <span class="proof-card-icon">◉</span> TEST SUITE
+        </div>
+        <div class="proof-table">
+          <div class="proof-row">
+            <span class="pk">Total tests</span>
+            <span class="pv mono"><span class="badge badge-green">91 passing</span></span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Unit tests</span>
+            <span class="pv mono">60</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Integration tests</span>
+            <span class="pv mono">31</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">TypeScript</span>
+            <span class="pv mono"><span class="badge badge-green">strict — zero errors</span></span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">Lint</span>
+            <span class="pv mono"><span class="badge badge-green">zero warnings</span></span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">CI</span>
+            <span class="pv">
+              <a href="https://github.com/0xkinno/sigil/actions" target="_blank" rel="noopener" class="proof-link">GitHub Actions ↗</a>
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="proof-card proof-card-wide">
+        <div class="proof-card-header">
+          <span class="proof-card-icon">⬢</span> CANONICAL FORMAT SPECIFICATION
+        </div>
+        <div class="canonical-spec">
+          <code class="canonical-format">chain | tx_hash | status | block_number | from | to | value_wei</code>
+        </div>
+        <div class="proof-table mt-16">
+          <div class="proof-row">
+            <span class="pk">chain</span>
+            <span class="pv mono">lowercase: ethereum · base · arbitrum · optimism · polygon</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">tx_hash</span>
+            <span class="pv mono">0x-prefixed, lowercase, 66 chars</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">status</span>
+            <span class="pv mono">confirmed · reverted · pending · not_found</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">block_number</span>
+            <span class="pv mono">decimal string — empty for pending/not_found</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">from / to</span>
+            <span class="pv mono">lowercase 0x-prefixed address</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">value_wei</span>
+            <span class="pv mono">decimal string of native msg.value (NOT token amount)</span>
+          </div>
+        </div>
+
+        <div class="fixture-example">
+          <div class="fixture-label">LIVE CANONICAL EXAMPLE — Base USDC Transfer</div>
+          <div class="fixture-hash">0x373982c25ba2c56c52c30a6db4ea14f9af267d6152f09f14f0b9b43e842e16a7</div>
+          <div id="proof-fixture-canonical" class="fixture-canonical">
+            <span class="fixture-loading">Fetching live canonical from miner…</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="proof-card proof-card-wide">
+        <div class="proof-card-header">
+          <span class="proof-card-icon">◈</span> SIGNAL EVIDENCE
+        </div>
+        <p class="proof-note">
+          Signal hashes are generated when real paid requests are routed through the Telegraph Engine
+          x402 payment layer. Each hash is permanently recorded on-chain and verifiable via the
+          Telegraph devnode signal endpoint.
+        </p>
+        <div class="proof-table" id="proof-signals-table">
+          <div class="proof-row proof-row-head">
+            <span class="pk">Date</span>
+            <span class="pv">Chain · TX · Signal Hash · Cost · ms</span>
+          </div>
+          <div class="proof-row">
+            <span class="pk">—</span>
+            <span class="pv mono muted">Awaiting first paid probe run via scripts/probe-engine.ts</span>
+          </div>
+        </div>
+        <a href="https://github.com/0xkinno/sigil/blob/main/evidence/signals.md" target="_blank" rel="noopener" class="proof-link proof-link-sm">View evidence/signals.md ↗</a>
+      </section>
+
+      <section class="proof-card">
+        <div class="proof-card-header">
+          <span class="proof-card-icon">◉</span> COMPETITIVE MOAT
+        </div>
+        <div class="moat-list">
+          <div class="moat-row moat-yes">5-chain coverage (ETH/Base/ARB/OPT/POLY)</div>
+          <div class="moat-row moat-yes">Dual-RPC consensus (fail-closed)</div>
+          <div class="moat-row moat-yes">ERC-20 Transfer log decoding</div>
+          <div class="moat-row moat-yes">Confirmation depth scoring</div>
+          <div class="moat-row moat-yes">Sub-2s parallel RPC queries</div>
+          <div class="moat-row moat-yes">12-state error taxonomy</div>
+          <div class="moat-row moat-yes">Canonical format exact match</div>
+          <div class="moat-divider">No competitor has ALL 7.</div>
+        </div>
+      </section>
+
+      <section class="proof-card">
+        <div class="proof-card-header">
+          <span class="proof-card-icon">⬢</span> TECHNOLOGY STACK
+        </div>
+        <div class="proof-table">
+          <div class="proof-row"><span class="pk">Language</span><span class="pv mono">TypeScript 5 strict</span></div>
+          <div class="proof-row"><span class="pk">Runtime</span><span class="pv mono">Node.js 20+</span></div>
+          <div class="proof-row"><span class="pk">HTTP</span><span class="pv mono">Express.js</span></div>
+          <div class="proof-row"><span class="pk">RPC Client</span><span class="pv mono">ethers.js v6</span></div>
+          <div class="proof-row"><span class="pk">Tests</span><span class="pv mono">Vitest</span></div>
+          <div class="proof-row"><span class="pk">Build</span><span class="pv mono">esbuild</span></div>
+          <div class="proof-row"><span class="pk">Hosting</span><span class="pv mono">Render (free tier)</span></div>
+          <div class="proof-row"><span class="pk">Payment</span><span class="pv mono">x402 / USDC Base Sepolia</span></div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-row">
+      <span>SIGIL · Telegraph Protocol · Miner #9010</span>
+      <span class="footer-links">
+        <a href="https://github.com/0xkinno/sigil" target="_blank" rel="noopener">GitHub ↗</a>
+        <a href="https://sigil-mssz.onrender.com/sigil.yaml" target="_blank" rel="noopener">YAML ↗</a>
+      </span>
+    </div>
+  </footer>
+
+  <script src="js/api.js"></script>
+  <script src="js/proof.js"></script>
+</body>
+</html>

@@ -1,96 +1,136 @@
 # Sigil — Handoff
 
-## Current State (end of Phase 5, code complete)
+## Current State (Phase 6 complete — all code done)
 
-All code phases (0 through 5) are complete. The miner is fully implemented:
+All code phases (0 through 6) are complete. The full build:
+
+### Miner (Track 1)
 - All 4 routes live: `GET /health`, `GET /ready`, `GET /lookup`, `GET /sigil.yaml`
 - 91 tests passing (60 unit + 31 integration)
+- 10 live-RPC tests in `test/integration/live-lookup.test.ts` (run with `INTEGRATION_RPC=1`)
 - TypeScript strict mode, zero lint errors, clean build
-- `sigil.yaml` manifest written and served
-- Evidence directory scaffolded
+- Deployed live at `https://sigil-mssz.onrender.com`, all 5 chains responding
+- Registered: Miner ID 9010, Registration ID 219, Status Active
+- Epoch 279 auto-scored by validators: score 0.012, rank #2
 
-**What the builder must do to go live:**
-1. Fill `.env.local` with Alchemy API keys (or use public fallback RPCs in `BACKUP_*`)
-2. Deploy to Render
-3. Update `base_url` in `sigil.yaml` to the real Render URL
-4. Register the miner at https://integrate.telegraphprotocol.com/
-5. Fill in `evidence/registration.md` with the miner ID and tx hash
-6. Monitor scoring at https://explorer.telegraphprotocol.com/miners
-7. Post X updates per Section 17 schedule
+### Dashboard (Track 3)
+- `dashboard/` — fully built, 4 pages, sci-fi design per Section 22
+- `dashboard/vercel.json` — ready to deploy to Vercel
+- **Builder must: deploy dashboard to Vercel and add the Vercel URL to README**
 
-## What The Builder Needs To Do On Render
+---
 
-1. Push this repo to GitHub (if not already done):
-   ```bash
-   git add -A
-   git commit -m "Phase 2-5 complete: API layer, YAML, evidence, README"
-   git remote add origin <your-github-repo-url>
-   git push -u origin main
-   ```
-2. Go to https://render.com/ and sign in (or create an account).
-3. **New +** → **Web Service** → connect the GitHub repo.
-4. Render should auto-detect `render.yaml` at the repo root and pre-fill:
-   - Build command: `npm ci && npm run build`
-   - Start command: `npm start`
-   - Health check path: `/health`
-5. Under the service's **Environment** tab, add the real values:
-   - `ALCHEMY_ETH_URL`, `ALCHEMY_BASE_URL`, `ALCHEMY_ARB_URL`, `ALCHEMY_OPT_URL`,
-     `ALCHEMY_POLY_URL` — from your Alchemy dashboard (one app per chain).
-   - `MINER_PRIVATE_KEY` — the Base Sepolia wallet key (**never share or commit**).
-   - `BASE_SEPOLIA_RPC` — your Alchemy Base Sepolia endpoint.
-   - The `BACKUP_*` URLs are already pre-filled with public fallback RPCs in `render.yaml`.
-6. Click **Create Web Service**. Render will build and deploy automatically.
-7. Copy the public URL (e.g. `https://sigil-mssz.onrender.com`) and update `sigil.yaml`:
-   ```yaml
-   base_url: https://sigil-mssz.onrender.com
-   ```
-8. Push the updated `sigil.yaml`.
-9. Confirm `GET https://<your-render-url>/health` returns `{"status":"ok","uptime_ms":...}`.
-10. Confirm `GET https://<your-render-url>/ready` shows all 5 chains as `true`.
+## What the builder must do next (in priority order):
 
-## After Render Deployment — YAML Registration
+### 1. Run the probe script (generates real signal hashes)
+```bash
+# Make sure .env.local has MINER_PRIVATE_KEY and BASE_SEPOLIA_RPC
+# The wallet must hold Base Sepolia testnet USDC
+# Faucet: https://faucet.circle.com (select Base Sepolia)
 
-1. Run `sha256sum sigil.yaml` and record the hash in `evidence/registration.md`
-2. Go to https://integrate.telegraphprotocol.com/
-3. Connect MetaMask wallet (with Base Sepolia ETH)
-4. Paste the contents of `sigil.yaml`
-5. Platform validates schema, sandbox-tests `/lookup`
-6. Sign the `registerMiner` transaction
-7. Record miner ID and tx hash in `evidence/registration.md`
-8. Verify: `npx tsx scripts/register.ts verify`
+npx tsx scripts/probe-engine.ts
+```
+Copy the signal hashes from the output into `evidence/signals.md`.
+
+### 2. Deploy the dashboard to Vercel
+```bash
+cd dashboard
+npx vercel deploy --prod
+# OR: connect the dashboard/ directory to a new Vercel project via the web UI
+```
+Add the Vercel URL to README.md and `evidence/signals.md`.
+
+### 3. Drive 100+ requests
+Open the deployed dashboard → `/signals` page → click "Run Batch Probe".
+This sends 5 requests (one per chain) directly to the live miner.
+Run it 20+ times to exceed 100 total requests.
+Also share the dashboard URL on X (drives organic traffic).
+
+### 4. Post X updates (Section 17 schedule)
+Every post must tag `@Telegraphprotoc` and include a real screenshot or link.
+- Day 7: Miner registered, live, auto-scored at rank #2 — screenshot explorer
+- Day 10: First real paid signals generated — screenshot signal hashes
+- Day 13: Test count (91+), 5 chains, 12 error states — screenshot test run
+- Day 15: Track 3 dashboard live — screenshot + URL
+- Track 3 window: "100+ requests driven, canonical accuracy [N]%" — screenshot signals page
+
+### 5. Monitor scoring
+- https://explorer.telegraphprotocol.com/miners/sigil-onchain-lookup
+- Check "Requests Served" count — should increase after running probes
+- Check canonical score — should approach 1.0 with correct responses
+
+---
+
+## Key Files
+
+| File | Purpose |
+|------|---------|
+| `src/core/dual-rpc.ts` | Core consensus engine — fail-closed dual-RPC |
+| `src/core/canonical.ts` | Deterministic 7-field canonical builder |
+| `src/routes/lookup.ts` | Main `/lookup` handler |
+| `sigil.yaml` | Telegraph YAML manifest |
+| `scripts/probe-engine.ts` | x402 paid probe via Telegraph Engine |
+| `dashboard/` | Phase 6 Track 3 application |
+| `evidence/` | All proof artifacts for judges |
+| `docs/TASKS.md` | Remaining task checklist |
+
+---
+
+## Environment Variables (.env.local)
+
+| Variable | Purpose | Status |
+|----------|---------|--------|
+| `ALCHEMY_ETH_URL` | Provider A — Ethereum mainnet | Set |
+| `ALCHEMY_BASE_URL` | Provider A — Base mainnet | Set |
+| `ALCHEMY_ARB_URL` | Provider A — Arbitrum One | Set |
+| `ALCHEMY_OPT_URL` | Provider A — Optimism | Set |
+| `ALCHEMY_POLY_URL` | Provider A — Polygon | Set |
+| `MINER_PRIVATE_KEY` | Base Sepolia wallet for x402 | Set |
+| `BASE_SEPOLIA_RPC` | Base Sepolia RPC for x402 | Set |
+| `BACKUP_*` | Public fallback RPCs | Pre-set in render.yaml |
+
+---
+
+## Dashboard Deployment (Vercel)
+
+The `dashboard/` directory is a static site — no build step, no bundler.
+
+**Option A: Vercel CLI**
+```bash
+npm install -g vercel
+cd dashboard
+vercel --prod
+```
+
+**Option B: Vercel web UI**
+1. Go to https://vercel.com/new
+2. Import your GitHub repo (`0xkinno/sigil`)
+3. Set **Root Directory** to `dashboard`
+4. Framework Preset: **Other** (static)
+5. Deploy → get public URL
+
+After deploy, add the URL everywhere:
+- `README.md` — add to the "Live Links" section
+- `evidence/signals.md` — add as "Dashboard URL"
+- X post Day 15 — include the URL
+
+---
 
 ## Local Development
 
 ```bash
 cp .env.example .env.local
-# fill in your real keys in .env.local
-npm run dev          # runs src/index.ts directly via tsx
-npm run typecheck
-npm run lint
-npm run build && npm start   # production-style run
-npm test             # unit tests only
-npm run test:all     # unit + integration tests
+# fill in real keys
+npm run dev          # start miner at localhost:3000
+npm test             # unit tests
+npm run test:all     # all 91 tests
+npm run typecheck    # strict TS check
+npm run lint         # ESLint
+npm run build        # production bundle → dist/
 ```
 
-## Key Files to Know
-
-| File | Purpose |
-|------|---------|
-| `src/core/dual-rpc.ts` | The heart of Sigil — fail-closed dual-RPC consensus |
-| `src/core/canonical.ts` | Deterministic 7-field scorer output |
-| `src/routes/lookup.ts` | Main API handler |
-| `sigil.yaml` | Telegraph miner manifest — update `base_url` before registering |
-| `evidence/` | All proof artifacts for judges |
-| `docs/TASKS.md` | Remaining tasks checklist |
-
-## Next Agent Should Start With
-
-Phase 6 — Track 3 Application: build a Next.js or plain HTML dashboard that:
-1. Queries Sigil for tx lookups (your miner) and other miners
-2. Drives 100+ real requests to `ONCHAIN_TX_LOOKUP`
-3. Displays results in the sci-fi/spatial design language from Section 22
-4. Pages: `/` (hero + live lookup), `/lookup` (full response view), `/proof` (evidence),
-   `/signals` (live signal feed)
-5. Deploy to Vercel (free)
-
-See Section 16 and Section 22 of `Sigil_Instruction.md` for the full spec.
+**Run live-RPC tests:**
+```bash
+INTEGRATION_RPC=1 npm run test:integration
+```
+(Requires real Alchemy keys in `.env.local`.)

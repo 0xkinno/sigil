@@ -17,3 +17,7 @@ Thumbs.db
 .idea/
 
 *.tsbuildinfo
+reference/
+target/
+scorer/target/
+

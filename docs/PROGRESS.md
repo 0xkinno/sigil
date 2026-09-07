@@ -28,11 +28,6 @@
   limiter, health route, 404 handler, error handler.
 - `docs/` scaffolded with all 12 files listed in Section 21.
 
-**Needs the builder:**
-- Hosting is Render. A `render.yaml` blueprint is committed; the builder connects GitHub repo
-  to Render and sets env vars manually.
-- All `.env` values (Alchemy keys, backup RPC URLs, miner private key).
-
 ## 2026-08-25 — Phase 1: Core Engine
 
 **Done:**
@@ -65,8 +60,6 @@
 - `scripts/probe.ts`, `scripts/register.ts`, `scripts/x402-test.ts` — utility scripts.
 - `supertest` installed as dev dependency.
 - **Total: 91 tests** (60 unit + 31 integration). All passing.
-- `npm run typecheck`, `npm run lint`, `npm run build`, `npm test`, `npm run test:integration`
-  all green.
 
 ## 2026-08-25 — Phase 3: YAML & Manifest
 
@@ -75,29 +68,39 @@
   Section 8: version, kind, id (9010), slug (sigil-onchain-lookup), protocol, endpoints[],
   semantics, rate limits, input_schema and output_schema at top level only.
 - `GET /sigil.yaml` endpoint serving the manifest at runtime.
-
-**Needs the builder:**
-- Update `base_url` in `sigil.yaml` to the actual Render URL after first deploy.
-- Update `id` in `sigil.yaml` if 9010 is already taken (check at devnode.telegraphprotocol.com/api/miners).
-- Complete registration at https://integrate.telegraphprotocol.com/
-- Record miner ID and registration tx hash in `evidence/registration.md`.
+- Miner registered on-chain: ID 9010, Registration ID 219, Status Active.
+- Live at `https://sigil-mssz.onrender.com`.
 
 ## 2026-08-25 — Phase 4–5: Evidence, Hardening, Polish
 
 **Done:**
 - `evidence/README.md` — judge-oriented proof path.
-- `evidence/registration.md` — registration template (to be filled after on-chain registration).
+- `evidence/registration.md` — registration data (ID 9010, reg ID 219).
 - `evidence/signals.md` — signal hash template (to be filled after first paid request).
 - `evidence/canonical-fixtures.md` — known tx hashes and expected canonical outputs.
 - `README.md` — full judge-facing README per Section 18 template.
-- `.env.local` — placeholder file for builder to fill real API keys.
+- Deployed to Render: `https://sigil-mssz.onrender.com`, all 5 chains responding.
+- GitHub: `https://github.com/0xkinno/sigil`, branch `main`.
+- Epoch 279 auto-scored by Telegraph validators: score 0.012, rank #2.
 
-**Needs the builder (to complete evidence collection):**
-- Deploy to Render with real Alchemy API keys.
-- Complete miner registration at integrate.telegraphprotocol.com.
-- Record registration ID, miner ID, tx hash in evidence/registration.md.
-- Run first paid request through Telegraph (Track 3 or test harness).
-- Record signal hash in evidence/signals.md.
-- Post X updates per Section 17 schedule (6-8 posts tagging @Telegraphprotoc).
+## 2026-08-26 — Phase 6: Track 3 Application + Live-Lookup Tests
 
-**Next:** Phase 6 — Track 3 Application (Aug 31 – Sep 7): build dashboard, drive 100+ requests.
+**Done:**
+- `test/integration/live-lookup.test.ts` — 10 live-RPC integration tests (guarded by
+  `INTEGRATION_RPC=1` env var). Tests the Base USDC fixture, Ethereum ETH fixture,
+  not_found path, effects decoding, evidence fields, finality data. All skip cleanly in CI.
+- `scripts/probe-engine.ts` — finalized with real known tx hashes for all 5 chains.
+  `viem` added explicitly to devDependencies.
+- `dashboard/` — Phase 6 Track 3 application built:
+  - `index.html` — Hero page with live lookup form, stats bar, features, chain status grid.
+  - `lookup.html` — Full lookup UI with sidebar meta, canonical display, effects, finality.
+  - `proof.html` — Evidence page: registration, health, test suite, canonical spec, signals.
+  - `signals.html` — Live signal feed, batch probe across all 5 chains.
+  - `css/globals.css` + per-page CSS — full Section 22 sci-fi/Bloomberg terminal design.
+  - `js/api.js` — shared Sigil API client (direct to `https://sigil-mssz.onrender.com`).
+  - Per-page JS: `home.js`, `lookup.js`, `proof.js`, `signals.js`.
+  - `vercel.json` — ready to deploy to Vercel.
+- All tests still passing: 60 unit + 31 integration (10 live tests skipped). CI green.
+
+**Next:** Run `scripts/probe-engine.ts` with Base Sepolia USDC to generate real signal hashes.
+Deploy dashboard to Vercel. Post X updates (Section 17 schedule).
