@@ -79,6 +79,6 @@ Legend: `[x]` done, `[ ]` pending. Mirrors `Sigil_Instruction.md` Section 7.
 - [x] `dashboard/css/` — full sci-fi/Bloomberg terminal design (Section 22)
 - [x] `dashboard/js/` — shared API client + per-page logic
 - [x] `dashboard/vercel.json` — Vercel static deployment config
-- [ ] Deploy dashboard to Vercel
-- [ ] Record Vercel URL and add to README + evidence
-- [ ] Drive 100+ real `ONCHAIN_TX_LOOKUP` requests via signals page batch probe + manual lookups
+- [x] Deploy dashboard to Vercel
+- [x] Record Vercel URL and add to README + evidence
+- [x] Drive 100+ real `ONCHAIN_TX_LOOKUP` requests via signals page batch probe + manual lookups

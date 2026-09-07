@@ -86,7 +86,7 @@ Sigil queries the rollup node's real-time state tags (`latest`, `safe`, `finaliz
 
 ## 5. Architectural Comparison
 
-| Dimension | Standard Competitors (TxLens, Verity) | Sigil |
+| Dimension | Standard Baseline Miners | Sigil |
 |---|---|---|
 | **Status Evaluation** | `receipt.status == 1 ? "confirmed" : "reverted"` | Dual-RPC Consensus + Finality State Machine |
 | **Finality Granularity** | Flat boolean / binary | 4 Tiers (`sequencer_soft`, `l1_posted`, `l1_finalized`, `native_finalized`) |

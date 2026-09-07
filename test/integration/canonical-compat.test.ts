@@ -1,9 +1,9 @@
 /**
  * Canonical compatibility integration test.
  *
- * Verifies that Sigil's canonical output for the known Base USDC fixture
- * (Section 9 of Sigil_Instruction.md) matches the Verity/Veyctum format
- * exactly: chain|tx_hash|status|block_number|from|to|value_wei
+ * Verifies that Sigil's canonical output for standard EVM transactions
+ * matches the Telegraph Protocol format exactly:
+ * chain|tx_hash|status|block_number|from|to|value_wei
  *
  * This test uses mock data (no live RPC) to stay CI-safe while still
  * asserting format compatibility against the exact fixture hash.
@@ -12,16 +12,14 @@ import { describe, expect, it } from 'vitest';
 import { buildCanonical } from '../../src/core/canonical.js';
 import type { CanonicalFields } from '../../src/types/index.js';
 
-// Known fixture from Section 2 / Section 9 of Sigil_Instruction.md
-// This is the Veyctum positive fixture — our canonical output must
-// follow the same format.
-const VEYCTUM_FIXTURE_HASH = '0x373982c25ba2c56c52c30a6db4ea14f9af267d6152f09f14f0b9b43e842e16a7';
+// Known fixture hash for canonical verification
+const CANONICAL_FIXTURE_HASH = '0x373982c25ba2c56c52c30a6db4ea14f9af267d6152f09f14f0b9b43e842e16a7';
 
-describe('canonical compatibility — Verity / Veyctum format', () => {
+describe('canonical compatibility — Telegraph Protocol format', () => {
   it('produces exactly 7 pipe-delimited fields', () => {
     const fields: CanonicalFields = {
       chain: 'base',
-      txHash: VEYCTUM_FIXTURE_HASH,
+      txHash: CANONICAL_FIXTURE_HASH,
       status: 'confirmed',
       blockNumber: '12345678',
       from: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -35,7 +33,7 @@ describe('canonical compatibility — Verity / Veyctum format', () => {
   it('field 0 is the lowercase chain name', () => {
     const fields: CanonicalFields = {
       chain: 'base',
-      txHash: VEYCTUM_FIXTURE_HASH,
+      txHash: CANONICAL_FIXTURE_HASH,
       status: 'confirmed',
       blockNumber: '10000000',
       from: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -48,7 +46,7 @@ describe('canonical compatibility — Verity / Veyctum format', () => {
   it('field 1 is the full 0x-prefixed lowercase tx hash (66 chars)', () => {
     const fields: CanonicalFields = {
       chain: 'base',
-      txHash: VEYCTUM_FIXTURE_HASH,
+      txHash: CANONICAL_FIXTURE_HASH,
       status: 'confirmed',
       blockNumber: '10000000',
       from: '0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -56,7 +54,7 @@ describe('canonical compatibility — Verity / Veyctum format', () => {
       valueWei: '0',
     };
     const hashField = buildCanonical(fields).split('|')[1];
-    expect(hashField).toBe(VEYCTUM_FIXTURE_HASH);
+    expect(hashField).toBe(CANONICAL_FIXTURE_HASH);
     expect(hashField?.length).toBe(66);
   });
 
@@ -65,7 +63,7 @@ describe('canonical compatibility — Verity / Veyctum format', () => {
     for (const status of statuses) {
       const fields: CanonicalFields = {
         chain: 'base',
-        txHash: VEYCTUM_FIXTURE_HASH,
+        txHash: CANONICAL_FIXTURE_HASH,
         status,
         blockNumber: status === 'confirmed' || status === 'reverted' ? '100' : '',
         from: status === 'confirmed' || status === 'reverted' ? '0x' + 'a'.repeat(40) : '',
@@ -79,7 +77,7 @@ describe('canonical compatibility — Verity / Veyctum format', () => {
   it('value_wei is a decimal string, not hex', () => {
     const fields: CanonicalFields = {
       chain: 'base',
-      txHash: VEYCTUM_FIXTURE_HASH,
+      txHash: CANONICAL_FIXTURE_HASH,
       status: 'confirmed',
       blockNumber: '100',
       from: '0x' + 'a'.repeat(40),
@@ -94,7 +92,7 @@ describe('canonical compatibility — Verity / Veyctum format', () => {
   it('produces the expected canonical prefix for the Veyctum Base USDC fixture', () => {
     const fields: CanonicalFields = {
       chain: 'base',
-      txHash: VEYCTUM_FIXTURE_HASH,
+      txHash: CANONICAL_FIXTURE_HASH,
       status: 'confirmed',
       blockNumber: '27372726',
       from: '0x6cf30f7e01f2d40b9b9a2fb7e3c4d30a6c1eb5d0',
@@ -103,7 +101,7 @@ describe('canonical compatibility — Verity / Veyctum format', () => {
     };
     const canonical = buildCanonical(fields);
     expect(canonical).toBe(
-      `base|${VEYCTUM_FIXTURE_HASH}|confirmed|27372726|0x6cf30f7e01f2d40b9b9a2fb7e3c4d30a6c1eb5d0|0x833589fcd6edb6e08f4c7c32d4f71b54bda02913|0`,
+      `base|${CANONICAL_FIXTURE_HASH}|confirmed|27372726|0x6cf30f7e01f2d40b9b9a2fb7e3c4d30a6c1eb5d0|0x833589fcd6edb6e08f4c7c32d4f71b54bda02913|0`,
     );
   });
 });

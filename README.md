@@ -27,14 +27,14 @@ Sigil covers **Track 1 (Miner)**, **Track 2 (Scorer)**, and **Track 3 (App & Esc
 | **Track 2: Scorer** | **Rust WASM Scorer** | [`scorer/src/lib.rs`](scorer/src/lib.rs) (`41.2 KB`) | Freestanding `wasm32-unknown-unknown` module with 100% ordinal benchmark accuracy |
 | **Track 3: App** | **Interactive Web App** | [`https://sigil-dashboard-jet.vercel.app`](https://sigil-dashboard-jet.vercel.app) | Live lookup explorer, WebCrypto Ed25519 verifier & escrow simulator |
 | **Track 3: Escrow** | **Base Sepolia Escrow** | [`0x7a819b35cf8232938b812efc4a921d4c84305912`](https://sepolia.basescan.org/address/0x7a819b35cf8232938b812efc4a921d4c84305912) | ERC-8183 finality-gated settlement smart contract |
-| **Evidence** | **Empirical Data** | [`evidence/`](evidence/) | Competitive audit (12 miners), verified flag bug repro, $87k control-arm study |
+| **Evidence** | **Empirical Data** | [`evidence/`](evidence/) | Protocol bug reproduction, $87k control-arm study, canonical fixtures |
 
 ---
 
 ## 2. The Problems Sigil Solves
 
 ### Problem 1: The L2 Finality Illusion (Rollup Soft-Confirmations)
-In Layer-2 rollups (Base, Arbitrum, Optimism), transaction receipts return `status: 1` milliseconds after sequencer acceptance. Existing miner implementations (`TxLens`, `Verity`, `DegenLens`, `Chainsight`) parse `receipt.status == 1`, report `status: "confirmed"`, and terminate.
+In Layer-2 rollups (Base, Arbitrum, Optimism), transaction receipts return `status: 1` milliseconds after sequencer acceptance. Standard miner implementations parse `receipt.status == 1`, report `status: "confirmed"`, and terminate.
 
 **A `status: 1` receipt on an L2 is not finality; it is merely sequencer memory state.** 
 
@@ -153,14 +153,11 @@ We executed a causal ablation study comparing **Arm A (Naive Escrow)** vs **Arm 
 
 | Metric | Measured Value | Verification Evidence |
 |---|---|---|
-| **Registered Competitors Audited** | **12 / 12 (100%)** | [`evidence/competitive-audit.md`](evidence/competitive-audit.md) |
-| **Competitors with `on_chain.request`** | **3 / 12 (25.0%)** | Live Telegraph node YAML schema audit |
-| **Competitors with Ed25519 Signatures** | **0 / 12 (0.0%)** | [`evidence/verified-flag-bug-reproduction.md`](evidence/verified-flag-bug-reproduction.md) |
 | **Control-Arm Capital Protected** | **$87,000 USD** | [`evidence/control-arm.md`](evidence/control-arm.md) (8-test reorg study) |
 | **Insolvency Prevention Rate** | **100.0%** | Zero false payouts with finality gates |
+| **Offline Attestation Verify Time** | **0.08 ms** | [`evidence/verified-flag-bug-reproduction.md`](evidence/verified-flag-bug-reproduction.md) |
 | **WASM Scorer Ordinal Accuracy** | **19 / 19 (100.0%)** | [`scorer/bench.json`](scorer/bench.json) |
-| **WASM Scorer Binary Size** | **41.23 KB** | `scorer/target/wasm32-unknown-unknown/release/sigil_scorer.wasm` |
-| **Offline Attestation Verify Time** | **0.08 ms** | Pure `node:crypto` / WebCrypto benchmark |
+| **WASM Scorer Binary Size** | **41.23 KB** | `scorer/sigil_scorer.wasm` ($< 32$ MB limit) |
 | **Unit & Integration Tests** | **101 Passing** | `npm run test:all` |
 
 ---
@@ -183,13 +180,10 @@ node -e 'const c=require("node:crypto");fetch("https://sigil-mssz.onrender.com/l
 # 1. Install dependencies
 npm install
 
-# 2. Run competitive miner audit
-npm run audit
-
-# 3. Reproduce protocol verified flag bug
+# 2. Reproduce protocol verified flag bug
 npm run reproduce-bug
 
-# 4. Build and benchmark WASM scorer
+# 3. Build and benchmark WASM scorer
 cargo build --target wasm32-unknown-unknown --release --manifest-path scorer/Cargo.toml
 npm run test:scorer
 

@@ -249,74 +249,54 @@
       </div>
     </section>
 
-    <!-- COMPETITIVE AUDIT TABLE -->
+    <!-- PROTOCOL ARCHITECTURE MATRIX -->
     <section id="audit-section" style="max-width: 1200px; margin: var(--sp-12) auto 0; padding: 0 var(--sp-8);">
-      <div class="section-title">Gap 1 &amp; Gap 3 Evidence: Competitive Audit</div>
-      <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:8px">12 Registered ONCHAIN_TX_LOOKUP Miners Audited Live</h2>
+      <div class="section-title">Protocol Architecture: Feature Comparison</div>
+      <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:8px">Protocol Features for ONCHAIN_TX_LOOKUP</h2>
       <p style="color:var(--text-sec);max-width:800px;margin-bottom:16px">
-        Scanned directly from <code>https://devnode.telegraphprotocol.com/api/miners</code>. Evaluates declared YAML, finality granularity, and cryptographic attestation signatures.
+        Comparing Sigil's multi-chain architecture, finality verification, and cryptographic attestations against standard baseline implementations.
       </p>
 
       <div class="audit-table-wrap">
         <table class="data-table">
           <thead>
             <tr>
-              <th>Miner ID</th>
-              <th>Name / Slug</th>
-              <th>on_chain.request</th>
-              <th>Finality Tier</th>
-              <th>Ed25519 Signed</th>
-              <th>Notes</th>
+              <th>Feature</th>
+              <th>Sigil Protocol</th>
+              <th>Standard Miner Baseline</th>
+              <th>Protocol Benefit</th>
             </tr>
           </thead>
           <tbody>
             <tr class="sigil-row">
-              <td><code>9010</code></td>
-              <td><strong>Sigil Multi-Chain Lookup</strong></td>
-              <td><span style="color:var(--accent)">✅ Yes</span></td>
-              <td><span style="color:var(--accent)">✅ Yes (4 Tiers)</span></td>
-              <td><span style="color:var(--accent)">✅ Yes (Ed25519)</span></td>
-              <td>Dual-RPC + Finality Engine + Escrow</td>
+              <td><strong>Multi-Chain Coverage</strong></td>
+              <td><span style="color:var(--accent)">5 Chains (ETH, Base, ARB, OP, Polygon)</span></td>
+              <td><span style="color:var(--text-sec)">1–2 Chains</span></td>
+              <td>Universal cross-chain querying</td>
             </tr>
             <tr>
-              <td><code>8453</code></td>
-              <td>Truvian Exact On-Chain Truth</td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td>Rank 2 Competitor; flat receipt status</td>
+              <td><strong>Dual-RPC Consensus</strong></td>
+              <td><span style="color:var(--accent)">✅ Yes (Parallel Provider Validation)</span></td>
+              <td><span style="color:var(--error)">❌ No (Single Provider)</span></td>
+              <td>Prevents stale / forked data</td>
             </tr>
             <tr>
-              <td><code>9005</code></td>
-              <td>Veyctum Effect Oracle</td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--accent)">✅ Yes</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td>Effect oracle; no signed attestation</td>
+              <td><strong>L2 Finality Tiers</strong></td>
+              <td><span style="color:var(--accent)">✅ Yes (4 Deterministic Tiers)</span></td>
+              <td><span style="color:var(--error)">❌ No (Flat Boolean Receipt)</span></td>
+              <td>Eliminates soft reorg vulnerabilities</td>
             </tr>
             <tr>
-              <td><code>9002</code></td>
-              <td>TxLens Multi-Intent</td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td>Stops at receipt confirmation</td>
+              <td><strong>Ed25519 Cryptographic Proof</strong></td>
+              <td><span style="color:var(--accent)">✅ Yes (Zero-Trust Attestation)</span></td>
+              <td><span style="color:var(--error)">❌ No (Unprovable Boolean)</span></td>
+              <td>100% offline verifiable via WebCrypto</td>
             </tr>
             <tr>
-              <td><code>9001</code></td>
-              <td>Verity On-Chain Lookup</td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td>No L2 reorg awareness</td>
-            </tr>
-            <tr>
-              <td><code>10002</code></td>
-              <td>DegenLens On-Chain Intel</td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td><span style="color:var(--error)">❌ No</span></td>
-              <td>No on_chain routing</td>
+              <td><strong>ERC-8183 On-Chain Routing</strong></td>
+              <td><span style="color:var(--accent)">✅ Yes (Full Request/Response Schema)</span></td>
+              <td><span style="color:var(--error)">❌ No (Missing Schema)</span></td>
+              <td>Direct on-chain smart contract settlement</td>
             </tr>
           </tbody>
         </table>
